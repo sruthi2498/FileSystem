@@ -23,7 +23,7 @@
 #define POINTERS_PER_INODE 5
 #define POINTERS_PER_BLOCK 1024
 
-#define DISK_BLOCK_SIZE 256  // each block
+#define DISK_BLOCK_SIZE  4096// each block
 #define DISK_MAGIC 0xdeadbeef 
 
 static FILE *diskfile;

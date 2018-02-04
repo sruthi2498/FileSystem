@@ -42,32 +42,37 @@ int disk_size()
 
 static void sanity_check( int blocknum, const void *data )
 {
+	
 	if(blocknum<0) {
-		printf("ERROR: blocknum (%d) is negative!\n",blocknum);
+		printf("ERROR: blocknum is negative! : %d\n",blocknum);
+		LogWrite("ERROR: blocknum is negative\n");
 		abort();
 	}
 
 	if(blocknum>=nblocks) {
 		printf("ERROR: blocknum (%d) is too big!\n",blocknum);
+		LogWrite("ERROR: blocknum is too big\n");
 		abort();
 	}
 
 	if(!data) {
 		printf("ERROR: null data pointer!\n");
+		LogWrite("ERROR: null data pointer\n");
 		abort();
 	}
+	LogWrite("Completed sanity_check\n");
 }
 
 void disk_read( int blocknum, char *data )
 {
-	LogWrite("Reading from disk\n");
+	
 	sanity_check(blocknum,data);
-
+	//data=malloc(sizeof(char)*DISK_BLOCK_SIZE);
 	fseek(diskfile,blocknum*DISK_BLOCK_SIZE,SEEK_SET);
-
 	if(fread(data,DISK_BLOCK_SIZE,1,diskfile)==1) {
 		nreads++;
-	} else {
+	} 
+	else {
 		printf("ERROR: couldn't access simulated disk: %s\n",strerror(errno));
 		char * error=strdup("ERROR: couldn't access simulated disk: ");
 		char * errorno=strdup(strerror(errno));
@@ -76,11 +81,12 @@ void disk_read( int blocknum, char *data )
 		LogWrite(error);
 		abort();
 	}
+	LogWrite("Reading from disk completed\n");
 }
 
 void disk_write( int blocknum, const char *data )
 {
-	LogWrite("Writing to disk\n");
+	
 	sanity_check(blocknum,data);
 
 	fseek(diskfile,blocknum*DISK_BLOCK_SIZE,SEEK_SET);
@@ -98,6 +104,7 @@ void disk_write( int blocknum, const char *data )
 		LogWrite(error);
 		abort();
 	}
+	LogWrite("Writing to disk completed\n");
 }
 
 void disk_close()
@@ -112,18 +119,7 @@ void disk_close()
 }
 
 void disk_attributes(){
-	printf("\nNumber of blocks %d\nNumber of reads %d\nNumber of writes %d\n",nblocks,nreads,nwrites);
+	printf("\nNumber of blocks %d\nNumber of reads %d\nNumber of writes %d\nSize of block %d\n",nblocks,nreads,nwrites,DISK_BLOCK_SIZE);
 
 }
 
-int main(){
-
-	ResetLogFile();
-	int disk_init_return = disk_init("memory_file.dat",5);
-	disk_attributes();
-	char * string="aaaa";
-	//disk_write(0, string );
-	disk_read(0,string);
-	disk_attributes();
-	disk_close();
-}

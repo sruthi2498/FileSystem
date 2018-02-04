@@ -1,2 +1,6 @@
-Sun Feb  4 14:09:31 2018: Initialising disk
-Sun Feb  4 14:09:31 2018: Reading from disk
+Sun Feb  4 20:54:32 2018: Initialising disk
+Sun Feb  4 20:54:32 2018: Completed sanity_check
+Sun Feb  4 20:54:32 2018: Writing to disk completed
+Sun Feb  4 20:54:32 2018: Completed sanity_check
+Sun Feb  4 20:54:32 2018: Reading from disk completed
+Sun Feb  4 20:54:32 2018: Closing Disk
