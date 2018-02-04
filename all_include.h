@@ -12,13 +12,18 @@
 #include <fcntl.h>
 #include <stddef.h>
 #include <assert.h>
+#include <time.h>
+
+#include "disk.h"
+#include "write_to_log.h"
+#include "syscall.h"
 
 #define syscall_MAGIC           0xf0f03410
 #define INODES_PER_BLOCK   128
 #define POINTERS_PER_INODE 5
 #define POINTERS_PER_BLOCK 1024
 
-#define DISK_BLOCK_SIZE 4096  // each block
+#define DISK_BLOCK_SIZE 256  // each block
 #define DISK_MAGIC 0xdeadbeef 
 
 static FILE *diskfile;

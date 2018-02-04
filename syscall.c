@@ -1,6 +1,6 @@
 #include "all_include.h"
-#include "syscall.h"
-#include "disk.h"
+
+
 
 #include <stdio.h>
 #include <string.h>

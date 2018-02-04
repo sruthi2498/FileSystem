@@ -1,1 +1,2 @@
-abc
+Sun Feb  4 14:09:31 2018: Initialising disk
+Sun Feb  4 14:09:31 2018: Reading from disk

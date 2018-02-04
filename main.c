@@ -66,5 +66,6 @@ static struct fuse_operations fs_oper = {
 };
 
 int main(int argc, char *argv[]){
+	ResetLog();
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }
