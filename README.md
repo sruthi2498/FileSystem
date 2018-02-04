@@ -1,6 +1,15 @@
 # FileSystem
 VFS using Fuse
 
+disk.h -Disk emulator
+disk.c -Disk emulator
+syscall.c - System Calls
+syscall.h - System Calls
+log.txt - Log file
+write_to_log.h - Writing to a log file
+write_to_log.c - Writing to a log file
+
+
 # What is FUSE?
 
     ->VFS and FUSE are related, but not quite the same thing. The main purpose of FUSE is to turn things-that-are-almost-like-files-but-not-quite (such as files on a remote server, or inside a ZIP file) into "real" directories and files. See the roster of FUSE filesystems to get an idea of what this is good for; this hopefully will make it clearer why FUSE beats "plain old files" in a lot of circumstances.
