@@ -9,12 +9,13 @@
 #include "disk.h"
 #include "write_to_log.h"
 #include "syscall.h"
+#include "initialise.h"
 
 
 
 int disk_init( const char *filename, int n ) 
 {
-	LogWrite("Initialising disk\n");
+	
 	diskfile = fopen(filename,"r+");
 	if(!diskfile) diskfile = fopen(filename,"w+");
 	if(!diskfile) return 0;
@@ -31,9 +32,10 @@ int disk_init( const char *filename, int n )
 	nblocks = n;  //number of blocks
 	nreads = 0;
 	nwrites = 0;
-
+	LogWrite("Completed initialising disk\n");
 	return 1;
 }
+
 
 int disk_size()
 {
@@ -60,10 +62,10 @@ static void sanity_check( int blocknum, const void *data )
 		LogWrite("ERROR: null data pointer\n");
 		abort();
 	}
-	LogWrite("Completed sanity_check\n");
+	//LogWrite("Completed sanity_check\n");
 }
 
-void disk_read( int blocknum, char *data )
+void disk_read( int blocknum, void*data )
 {
 	
 	sanity_check(blocknum,data);
@@ -84,10 +86,15 @@ void disk_read( int blocknum, char *data )
 	LogWrite("Reading from disk completed\n");
 }
 
-void disk_write( int blocknum, const char *data )
+void disk_write( int blocknum, const void *data )
 {
 	
 	sanity_check(blocknum,data);
+
+	// if(blocknum<NUMBER_OF_INODE_BLOCKS){
+	// 	LogWrite("Permission Denied : Cannot write to this block\n");
+	// 	return;
+	// }
 
 	fseek(diskfile,blocknum*DISK_BLOCK_SIZE,SEEK_SET);
 
@@ -119,7 +126,12 @@ void disk_close()
 }
 
 void disk_attributes(){
-	printf("\nNumber of blocks %d\nNumber of reads %d\nNumber of writes %d\nSize of block %d\n",nblocks,nreads,nwrites,DISK_BLOCK_SIZE);
+	LogWrite("Printing disk attributes\n");
+	printf("\nDisk\n");
+	printf("    Number of blocks %d\n",nblocks);
+	printf("    Number of reads  %d\n",nreads);
+	printf("    Number of writes %d\n",nwrites);
+	printf("    Size of block    %d\n",DISK_BLOCK_SIZE);
 
 }
 

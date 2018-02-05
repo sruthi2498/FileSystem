@@ -17,14 +17,20 @@
 #include "disk.h"
 #include "write_to_log.h"
 #include "syscall.h"
+#include "initialise.h"
+
 
 #define syscall_MAGIC           0xf0f03410
 #define INODES_PER_BLOCK   128
-#define POINTERS_PER_INODE 5
+#define POINTERS_PER_INODE 4
 #define POINTERS_PER_BLOCK 1024
 
 #define DISK_BLOCK_SIZE  4096// each block
 #define DISK_MAGIC 0xdeadbeef 
+
+#define NUMBER_OF_BLOCKS 256
+#define NUMBER_OF_INODE_BLOCKS 26
+#define NUMBER_OF_INODES NUMBER_OF_INODE_BLOCKS*INODES_PER_BLOCK
 
 static FILE *diskfile;
 static int nblocks=0;
@@ -43,7 +49,8 @@ struct syscall_inode {
 	int isvalid;
 	int size;
 	int direct[POINTERS_PER_INODE];
-	int indirect;
+	int blocknum;
+	int offset_in_block;
 };
 
 union syscall_block {
@@ -53,4 +60,6 @@ union syscall_block {
 	char data[DISK_BLOCK_SIZE];
 };
 
+struct syscall_inode i_list[NUMBER_OF_INODES];
 
+int free_block_bitmap[NUMBER_OF_BLOCKS];
