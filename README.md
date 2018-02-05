@@ -1,14 +1,9 @@
 # FileSystem
 VFS using Fuse
 
-disk.h -Disk emulator
-disk.c -Disk emulator
-syscall.c - System Calls
-syscall.h - System Calls
-log.txt - Log file
-write_to_log.h - Writing to a log file
-write_to_log.c - Writing to a log file
-
+# To execute
+    $make
+    $./initialise
 
 # What is FUSE?
 
@@ -18,5 +13,17 @@ write_to_log.c - Writing to a log file
     ->It also helps to mount the file system.
     ->FUSE helps you in writing a virtual file system.
     
+# Files 
+    disk.h -Disk emulator
+    disk.c -Disk emulator
+    syscall.c - System Calls
+    syscall.h - System Calls
+    initialise.c -Initialise disk and inodes
+    initialise.h -Initialise disk and inodes
+    log.txt - Log file
+    write_to_log.h - Writing to a log file
+    write_to_log.c - Writing to a log file
+
+
 
 
