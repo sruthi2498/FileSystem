@@ -13,6 +13,20 @@ VFS using Fuse
     ->It also helps to mount the file system.
     ->FUSE helps you in writing a virtual file system.
     
+# Workflow
+    main.c 
+        functions start with fs_ 
+        Intergrated with fuse (set fuse operations)
+        Call syscall functions
+    syscall.c
+        functions start with syscall_ 
+        Do all Inode operations
+        Call disk functions
+    disk.c
+        functions start with disk_
+        Do disk reads and writes
+        
+    
 # Files 
     disk.h -Disk emulator
     disk.c -Disk emulator
