@@ -20,7 +20,7 @@ int init_superblock(){
 	block.super.ninodeblocks= NUMBER_OF_INODE_BLOCKS ;
 	block.super.ninodes=NUMBER_OF_BLOCKS * INODES_PER_BLOCK;
 
-	disk_write(0,0,block.data);
+	disk_write(0, block.data);
 	LogWrite("Superblock initialised\n");
 	return 1;
 
@@ -86,7 +86,7 @@ int initialise_empty_inodes(){
 			block.inode[j]=i_list[k];
 			k++;
 		}
-		disk_write(i,0,block.data);
+		disk_write(i,block.data);
 		
 	}
 	LogWrite("Completed Initialising empty inodes\n");

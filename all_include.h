@@ -72,5 +72,3 @@ union syscall_block {
 struct syscall_inode i_list[NUMBER_OF_INODES];
 
 int free_block_bitmap[NUMBER_OF_BLOCKS];
-
-union syscall_block block;

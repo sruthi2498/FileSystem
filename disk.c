@@ -86,7 +86,7 @@ void disk_read( int blocknum, void*data )
 	LogWrite("Reading from disk completed\n");
 }
 
-void disk_write( int blocknum, int offset, const void *data )
+void disk_write( int blocknum, const void *data )
 {
 	
 	sanity_check(blocknum,data);
@@ -96,7 +96,7 @@ void disk_write( int blocknum, int offset, const void *data )
 	// 	return;
 	// }
 
-	fseek(diskfile,(blocknum*DISK_BLOCK_SIZE)+offset,SEEK_SET);
+	fseek(diskfile,(blocknum*DISK_BLOCK_SIZE),SEEK_SET);
 
 	int write_ret=fwrite(data,DISK_BLOCK_SIZE,1,diskfile);
 	if(write_ret==1) {

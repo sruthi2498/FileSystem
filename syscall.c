@@ -42,6 +42,7 @@ syscall_debug
 */
 void syscall_debug()
 {
+	union syscall_block block;
 	disk_read(0,block.data);
 
 	printf("\nsuperblock:\n");
@@ -61,6 +62,7 @@ syscall_mount
 */
 int syscall_mount()
 {
+	union syscall_block block;
 	disk_read(0, block.data);
 	printf("\n%d\n",block.super.magic);
 	if(block.super.magic!=DISK_MAGIC){
@@ -106,7 +108,7 @@ int syscall_create()
 			int block_offset = calculate_offset_in_block(i,blocknumber);
 
 			//Write inode information to disk 
-			disk_write(blocknumber, block_offset, &i_list[i] );
+			disk_write(blocknumber, &i_list[i] );
 
 			//Log creation
 			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum, i_list[i].i_ctime);
