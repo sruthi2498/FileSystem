@@ -64,7 +64,7 @@ int syscall_mount()
 {
 	union syscall_block block;
 	disk_read(0, block.data);
-	printf("\n%d\n",block.super.magic);
+	printf("\n%x\n",block.super.magic);
 	if(block.super.magic!=DISK_MAGIC){
 		LogWrite("Disk not correct\n");
 		return 0;
@@ -91,6 +91,7 @@ syscall_create
 int syscall_create()
 {
 	int i;
+	union syscall_block block;
 	for(i=0; i<NUMBER_OF_INODES; i++){
 		//Find free inode
 		if(i_list[i].isvalid == 0){
@@ -107,8 +108,12 @@ int syscall_create()
 			int blocknumber = calculate_block_for_inode(i);
 			int block_offset = calculate_offset_in_block(i,blocknumber);
 
-			//Write inode information to disk 
-			disk_write(blocknumber, &i_list[i] );
+			//Read block with inode from disk 
+			printf("Reading block %d ... \n", blocknumber);
+			disk_read(blocknumber, block.data);
+
+			//Update block with new inode information
+
 
 			//Log creation
 			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum, i_list[i].i_ctime);

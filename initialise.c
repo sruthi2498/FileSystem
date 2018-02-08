@@ -118,7 +118,7 @@ void inode_atttributes_given_inodenumber(int inodenumber){
 	printf("    offset       : %d\n",Inode.offset_in_block);
 	printf("    isvalid      : %d\n",Inode.isvalid);
 	printf("    size         : %d\n",Inode.size);
-	printf("	change		 : %s\n",Inode.i_ctime);
+	printf("	change		 : %s\n",Inode.i_ctime);	//last change to inode information
 
 	for(int i=0;i<POINTERS_PER_INODE;i++){
 		printf("%d ",Inode.direct[i]);
