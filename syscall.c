@@ -20,7 +20,6 @@ syscall_format
 	- Returns one on success, zero otherwise. Note that formatting a filesystem does not cause it to be mounted. Also, an attempt to format an already-mounted disk should do nothing and return failure. */
 int syscall_format()
 {
-	
 	ResetLogFile();
 	LogWrite("System Format\n");
 	
@@ -44,7 +43,6 @@ syscall_debug
 void syscall_debug()
 {
 	union syscall_block block;
-
 	disk_read(0,block.data);
 
 	printf("\nsuperblock:\n");
@@ -65,9 +63,9 @@ syscall_mount
 int syscall_mount()
 {
 	union syscall_block block;
-	disk_read(0,block.data);
-	printf("\n%d\n",block.super.magic);
-	if(block.super.magic!=0xf0f03410){
+	disk_read(0, block.data);
+	printf("\n%x\n",block.super.magic);
+	if(block.super.magic!=DISK_MAGIC){
 		LogWrite("Disk not correct\n");
 		return 0;
 	}
@@ -84,18 +82,91 @@ int syscall_mount()
 	return 0;
 }
 
+/* 
+syscall_create
+	- creates new inode of length = 0
+	- returns +ve inode number on success
+	- returns 0 on fail
+*/
 int syscall_create()
 {
+	int i;
+	union syscall_block block;
+	for(i=0; i<NUMBER_OF_INODES; i++){
+		//Find free inode
+		if(i_list[i].isvalid == 0){
+
+			//Initialize		
+			i_list[i].isvalid = 1;
+			i_list[i].size = 0;
+
+			//Set time of creation
+			clock_gettime(CLOCK_REALTIME, &i_list[i].i_ctime);
+
+
+			//Get disk information 
+			int blocknumber = calculate_block_for_inode(i);
+			int block_offset = calculate_offset_in_block(i,blocknumber);
+
+			//Read block with inode from disk 
+			printf("Reading block %d ... \n", blocknumber);
+			disk_read(blocknumber, block.data);
+
+			//Update block with new inode information
+
+
+			//Log creation
+			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum, i_list[i].i_ctime);
+			LogWrite("Created inode successfully\n");
+
+			return i;
+		}
+	}
+	LogWrite("No free inodes! Out of space \n");
 	return 0;
 }
 
 int syscall_delete( int inumber )
 {
+	if((inumber <= 0)|| (inumber > NUMBER_OF_INODES)){
+		LogWrite("Invalid Inode number\n");
+	}
+	else{
+		int i;
+		int block_to_be_freed;
+		if(i_list[inumber].isvalid == 1){
+			
+			//Change status to invalid
+			i_list[inumber].isvalid = 0;
+
+			//Return data blocks to free block bitmap
+			for(i=0; i<POINTERS_PER_INODE; i++){
+				block_to_be_freed = i_list[inumber].direct[i];
+				if(block_to_be_freed > 0){
+					free_block_bitmap[block_to_be_freed] = 0;
+					printf("Datablock %d freed\n",block_to_be_freed);
+				}
+				//Set data block pointers from inode to 0
+				i_list[inumber].direct[i] = 0;
+			}
+
+			//Log deletion
+			printf("Inode %d deleted successfully\n", inumber);
+			LogWrite("Inode deleted successfully\n");
+			return 1;
+		}
+		else{
+			printf("Inode %d already free\n", inumber);
+			LogWrite("Inode was already free\n");
+		}
+	}
+
 	return 0;
 }
 
 int syscall_getsize( int inumber )
 {
+
 	return -1;
 }
 

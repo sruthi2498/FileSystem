@@ -15,12 +15,12 @@
 int init_superblock(){
 
 	union syscall_block block;
-	block.super.magic=DISK_MAGIC;
+	block.super.magic= DISK_MAGIC;
 	block.super.nblocks=NUMBER_OF_BLOCKS;
 	block.super.ninodeblocks= NUMBER_OF_INODE_BLOCKS ;
 	block.super.ninodes=NUMBER_OF_BLOCKS * INODES_PER_BLOCK;
 
-	disk_write(0,block.data);
+	disk_write(0, block.data);
 	LogWrite("Superblock initialised\n");
 	return 1;
 
@@ -74,9 +74,9 @@ add it to i-list
 */
 int initialise_empty_inodes(){
 	for(int i=0;i<NUMBER_OF_INODES;i++){
+		i_list[i].isvalid=0;
 		i_list[i].blocknum=calculate_block_for_inode(i);
 		i_list[i].offset_in_block=calculate_offset_in_block(i,i_list[i].blocknum);
-
 
 	}
 	union syscall_block block;
@@ -117,7 +117,8 @@ void inode_atttributes_given_inodenumber(int inodenumber){
 	printf("    blocknum     : %d\n",Inode.blocknum);
 	printf("    offset       : %d\n",Inode.offset_in_block);
 	printf("    isvalid      : %d\n",Inode.isvalid);
-	printf("    size         : %d\n    ",Inode.size);
+	printf("    size         : %d\n",Inode.size);
+	printf("	change		 : %s\n",Inode.i_ctime);	//last change to inode information
 
 	for(int i=0;i<POINTERS_PER_INODE;i++){
 		printf("%d ",Inode.direct[i]);
@@ -136,7 +137,16 @@ int main(){
 	}
 	disk_attributes();
 	syscall_mount();
+
+	syscall_create();
+	syscall_create();
+	syscall_delete(2);
+	syscall_delete(1);
+	syscall_create();
+	inode_atttributes_given_inodenumber(1);
 	
+	disk_attributes();
+
 	// inode_atttributes_given_inodenumber(676);
 	// //syscall_inode_atttributes(146);
 	// //disk_write(0,"aaa");

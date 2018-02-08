@@ -96,7 +96,7 @@ void disk_write( int blocknum, const void *data )
 	// 	return;
 	// }
 
-	fseek(diskfile,blocknum*DISK_BLOCK_SIZE,SEEK_SET);
+	fseek(diskfile,(blocknum*DISK_BLOCK_SIZE),SEEK_SET);
 
 	int write_ret=fwrite(data,DISK_BLOCK_SIZE,1,diskfile);
 	if(write_ret==1) {
