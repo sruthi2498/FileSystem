@@ -2,9 +2,10 @@
 #define syscall_H
 
 void syscall_debug();
-int  syscall_format();
+int  syscall_format(int reset);
 int  syscall_mount();
 
+struct syscall_inode ReadInode(int inumber);
 
 int  syscall_create();
 int  syscall_delete( int inumber );

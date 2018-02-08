@@ -18,20 +18,27 @@ syscall_format
 	- clears the inode table
 	- writes the superblock 
 	- Returns one on success, zero otherwise. Note that formatting a filesystem does not cause it to be mounted. Also, an attempt to format an already-mounted disk should do nothing and return failure. */
-int syscall_format()
+int syscall_format(int reset)
 {
 	
 	ResetLogFile();
 	LogWrite("System Format\n");
 	
+	//initialise disk file
 	if(disk_init("memory_file.dat",NUMBER_OF_BLOCKS	)!=1){
 		LogWrite("Disk init failed");
 		return 0;
 	}
+
+	//initialise superblock
 	int superret=init_superblock();
 	if(superret!=1) return 0;
+
+	//view superblock details
 	syscall_debug();
-	int inoderet=initialise_empty_inodes();
+
+	//initialise empty inodes
+	int inoderet=initialise_empty_inodes(reset);
 	if(inoderet!=1) return 0;
 	
 	return 1;
@@ -66,32 +73,127 @@ int syscall_mount()
 {
 	union syscall_block block;
 	disk_read(0,block.data);
-	printf("\n%d\n",block.super.magic);
-	if(block.super.magic!=0xf0f03410){
+	if(block.super.magic!=DISK_MAGIC){
 		LogWrite("Disk not correct\n");
+		LogWrite("Syscall Mount Failed\n");
 		return 0;
 	}
 	LogWrite("Disk is valid\n");
-	// int k=0; //for every actual inode
-	// for(int i=1;i<=NUMBER_OF_INODE_BLOCKS;i++){ //for every inode block
-	// 	disk_read(i,block.data);
-	// 	for(int j=0;j<INODES_PER_BLOCK;j++){//for every inode in the block
-			
-	// 		k++;
-	// 	}
-	// }
+
+	int k=0; //for every actual inode
+	struct syscall_inode Inode;
+
+	for(int i=1;i<=NUMBER_OF_INODE_BLOCKS;i++){ //for every inode block
+		disk_read(i,block.data);
+		for(int j=0;j<INODES_PER_BLOCK;j++){//for every inode in the block
+			Inode = block.inode[j];
+			//printf("\ninode %d pointers %d\n",k,POINTERS_PER_INODE);
+			/*
+			for every data block pointer in the inode
+				check if the pointer exists
+				if it does, mark that data block in the free block bitmap
+			*/
+			for(int l=0;l<POINTERS_PER_INODE;l++){
+				//printf("%d ",Inode.direct[l]);
+				if(Inode.direct[l]!=-1){
+					free_block_bitmap[Inode.direct[l]]=1;
+				}
+			}
+			k++;
+		}
+	}
+
 	LogWrite("Free Block Bitmap created\n");
-	return 0;
+	return 1;
 }
 
+/*
+syscall_create 
+	- Create a new inode of zero length
+	- On success, return the (positive) inumber
+	- On failure, return -1
+*/
 int syscall_create()
 {
-	return 0;
+	int i=0;
+	// find the first non valid inode
+	while(i<NUMBER_OF_INODES){
+		if(i_list[i].isvalid==0){
+			LogWrite("Created new inode\n");
+			return i;
+		}
+	}
+	LogWrite("No free inode found\n");
+	return -1;
 }
 
+/*
+Read specified inode from disk
+*/
+struct syscall_inode ReadInode(int inumber){
+	//calculate block number for this inode
+	int blocknum= calculate_block_for_inode(inumber);
+
+	//read the specified block
+	union syscall_block block;
+	disk_read(blocknum,block.data);
+
+	//calculate offset for this inode and block
+	int offset= calculate_offset_in_block(inumber,blocknum);
+
+
+	LogWrite("Read Inode\n");
+	return block.inode[offset];
+}
+
+
+/*
+syscall_delete 
+	- Delete the inode indicated by the inumber
+	- Release all data and indirect blocks assigned to this inode 
+	- Return them to the free block map
+	- On success, return one. On failure, return 0. 
+*/
 int syscall_delete( int inumber )
 {
-	return 0;
+	if(inumber<0 || inumber> NUMBER_OF_INODES){
+		LogWrite("Unable to delete specified inode\n");
+		return 0;
+	}
+	//read the specified inode
+	struct syscall_inode Inode = ReadInode(inumber);
+	inode_atttributes_given_inode(Inode);
+
+	//Make changes to the inode
+
+	//for every data block
+	for(int i=0;i<POINTERS_PER_INODE;i++){
+		if(Inode.direct[i]!=-1){ //if a valid data block exists
+			//free the data block in the bitmap
+			free_block_bitmap[Inode.direct[i]]=0;
+			//free the data block in the inode
+			Inode.direct[i]=-1;
+		}
+	}
+	Inode.isvalid=0; //make the inode invalid
+	Inode.size=(int)sizeof(Inode);
+
+	union syscall_block block;
+	//Block and offset for this inode
+	int blocknum=Inode.blocknum;
+	int offset=Inode.offset_in_block;
+
+	inode_atttributes_given_inode(Inode);
+
+	//Read the specified block
+	disk_read(blocknum,block.data);
+	//set the inode in the block to the new modified one
+	block.inode[offset]=Inode;
+	//Write the changes made back to disk
+	disk_write(blocknum,block.data);
+
+	LogWrite("Deleted specified inode\n");
+	return 1;
 }
 
 int syscall_getsize( int inumber )

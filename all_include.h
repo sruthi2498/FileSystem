@@ -23,7 +23,7 @@
 #define syscall_MAGIC           0xf0f03410
 #define INODES_PER_BLOCK   128
 #define POINTERS_PER_INODE 4
-#define POINTERS_PER_BLOCK 1024
+#define POINTERS_PER_BLOCK INODES_PER_BLOCK * POINTERS_PER_INODE
 
 #define DISK_BLOCK_SIZE  4096// each block
 #define DISK_MAGIC 0xdeadbeef 

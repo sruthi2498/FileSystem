@@ -72,10 +72,16 @@ Go through all inodes
 Caculate block number and offset for them
 add it to i-list
 */
-int initialise_empty_inodes(){
+int initialise_empty_inodes(int reset){
 	for(int i=0;i<NUMBER_OF_INODES;i++){
 		i_list[i].blocknum=calculate_block_for_inode(i);
 		i_list[i].offset_in_block=calculate_offset_in_block(i,i_list[i].blocknum);
+		if(reset){ //set all data blocks to -1
+			for(int j=0;j<INODES_PER_BLOCK;j++){//for every inode in the block
+				i_list[i].direct[j]=-1;
+			}
+		}
+		i_list[i].size=(int)sizeof(i_list[i]);
 
 
 	}
@@ -126,16 +132,55 @@ void inode_atttributes_given_inodenumber(int inodenumber){
 
 }
 
+void inode_atttributes_given_inode(struct syscall_inode Inode){
+	printf("\nInode:\n");
+
+	printf("    blocknum     : %d\n",Inode.blocknum);
+	printf("    offset       : %d\n",Inode.offset_in_block);
+	printf("    isvalid      : %d\n",Inode.isvalid);
+	printf("    size         : %d\n    ",Inode.size);
+
+	for(int i=0;i<POINTERS_PER_INODE;i++){
+		printf("%d ",Inode.direct[i]);
+	}
+	printf("\n");
+}
 
 
 int main(){
 
-	int formatret=syscall_format();
-	if(formatret!=1){
-		LogWrite("Syscall Format failed");
+	int choice;
+	int trial=1;
+
+	do{
+		printf("\nDo you want to reset the file system?\n\tType 1 to Reset\n\tType 0 to continue with old file system\n\t(Note that all files will be lost)\n");
+		scanf("%d",&choice);
+		if(choice!=1 && choice!=0) 
+			printf("\nInvalid Choice Try again\n\tType 1 to Reset\n\tType 0 to continue with old file system\n");
+		else trial =0;
+	}while(trial==1);
+
+	if(choice==1){
+		printf("\nReset File system");
+		/*
+		here argument to syscall_format is 1, indicating reset
+		*/
+		int formatret=syscall_format(1);
+		if(formatret!=1){
+			LogWrite("Syscall Format failed");
+		}
+	}
+	else {
+		printf("\nOld File System");
+		int formatret=syscall_format(0);
+		if(formatret!=1){
+			LogWrite("Syscall Format failed");
+		}
 	}
 	disk_attributes();
 	syscall_mount();
+
+	syscall_delete(134);
 	
 	// inode_atttributes_given_inodenumber(676);
 	// //syscall_inode_atttributes(146);
