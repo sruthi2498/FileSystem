@@ -7,11 +7,12 @@ int  syscall_mount();
 
 struct syscall_inode ReadInode(int inumber);
 
-int  syscall_create();
-int  syscall_delete( int inumber );
+int  syscall_create_Inode();
+int  syscall_delete_Inode( int inumber );
 int  syscall_getsize();
 
-int  syscall_read( int inumber, char *data, int length, int ofsyscallet );
-int  syscall_write( int inumber, const char *data, int length, int ofsyscallet );
+int  syscall_read( int inumber, char *data, int length, int offset );
+int  syscall_write( int inumber, const char *data, int length, int offset );
+
 
 #endif
