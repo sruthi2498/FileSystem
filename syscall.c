@@ -115,16 +115,41 @@ syscall_create
 */
 int syscall_create()
 {
-	int i=0;
-	// find the first non valid inode
-	while(i<NUMBER_OF_INODES){
-		if(i_list[i].isvalid==0){
-			LogWrite("Created new inode\n");
+	int i;
+	union syscall_block block;
+	for(i=0; i<NUMBER_OF_INODES; i++){
+		//Find free inode
+		if(i_list[i].isvalid == 0){
+
+			//Initialize		
+			i_list[i].isvalid = 1;
+			i_list[i].size = 0;
+
+			//Set time of creation
+			clock_gettime(CLOCK_REALTIME, &i_list[i].i_ctime);
+
+
+			//Get disk information 
+			int blocknumber = calculate_block_for_inode(i);
+			int block_offset = calculate_offset_in_block(i,blocknumber);
+
+			//Read block with inode from disk 
+			printf("Reading block %d ... \n", blocknumber);
+			disk_read(blocknumber, block.data);
+
+			//Update block with new inode information
+			block.data[block_offset] = i_list[i];
+			disk_write(blocknumber, block.data);
+
+			//Log creation
+			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum, i_list[i].i_ctime);
+			LogWrite("Created inode successfully\n");
+
 			return i;
 		}
 	}
-	LogWrite("No free inode found\n");
-	return -1;
+	LogWrite("No free inodes! Out of space \n");
+	return 0;
 }
 
 /*
