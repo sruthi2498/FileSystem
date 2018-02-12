@@ -170,7 +170,9 @@ int syscall_delete( int inumber )
 	for(int i=0;i<POINTERS_PER_INODE;i++){
 		if(Inode.direct[i]!=-1){ //if a valid data block exists
 			//free the data block in the bitmap
+			printf("\ndata block %d before freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
 			free_block_bitmap[Inode.direct[i]]=0;
+			printf("\ndata block %d after freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
 			//free the data block in the inode
 			Inode.direct[i]=-1;
 		}
@@ -196,10 +198,23 @@ int syscall_delete( int inumber )
 	return 1;
 }
 
+
+/*
+syscall_getsize
+ 	-Return the logical size of the given inode, in bytes
+ 	- On failure, return -1. 
+*/
 int syscall_getsize( int inumber )
 {
-	return -1;
+	if(inumber<=1 || inumber>NUMBER_OF_INODES){
+		LogWrite("Getsize attempted on invalid inode");
+		return -1;
+	}
+	struct syscall_inode Inode;
+	Inode=ReadInode(inumber);
+	return Inode.size;
 }
+
 
 int syscall_read( int inumber, char *data, int length, int ofsyscallet )
 {
