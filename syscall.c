@@ -3,6 +3,8 @@
 #include "write_to_log.h"
 #include "syscall.h"
 #include "initialise.h"
+#include "dir.h"
+#include "file.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -113,7 +115,7 @@ syscall_create
 	- On success, return the (positive) inumber
 	- On failure, return -1
 */
-int syscall_create()
+int syscall_create_Inode()
 {
 	int i=0;
 	// find the first non valid inode
@@ -154,7 +156,7 @@ syscall_delete
 	- Return them to the free block map
 	- On success, return one. On failure, return 0. 
 */
-int syscall_delete( int inumber )
+int syscall_delete_Inode( int inumber )
 {
 	if(inumber<0 || inumber> NUMBER_OF_INODES){
 		LogWrite("Unable to delete specified inode\n");
@@ -215,14 +217,18 @@ int syscall_getsize( int inumber )
 	return Inode.size;
 }
 
+/* 
+syscall_read 
+	- Read data from a valid inode
+	- Copy "length" bytes from the inode into the "data" pointer, starting at "offset" in the inode. Return the total number of bytes read. The number of bytes actually read could be smaller than the number of bytes requested, perhaps if the end of the inode is reached. If the given inumber is invalid, or any other error is encountered, return 0. 
+*/
 
-int syscall_read( int inumber, char *data, int length, int ofsyscallet )
+int syscall_read( int inumber, char *data, int length, int offset )
 {
 	return 0;
 }
 
-int syscall_write( int inumber, const char *data, int length, int ofsyscallet )
+int syscall_write( int inumber, const char *data, int length, int offset )
 {
 	return 0;
 }
-
