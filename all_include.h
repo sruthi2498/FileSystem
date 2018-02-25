@@ -18,6 +18,7 @@
 #include "write_to_log.h"
 #include "syscall.h"
 #include "initialise.h"
+#include "dir.h"
 
 
 #define syscall_MAGIC           0xf0f03410
