@@ -1,5 +1,4 @@
 #include "all_include.h"
-#include "write_to_log.h"
 
 void LogWrite(char * string){
 	fp=fopen("log.txt","a+");
