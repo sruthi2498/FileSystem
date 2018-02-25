@@ -14,12 +14,12 @@
 #include <assert.h>
 #include <time.h>
 
-#include "disk.h"
 #include "write_to_log.h"
+#include "disk.h"
 #include "syscall.h"
-#include "initialise.h"
 #include "dir.h"
-
+#include "file.h"
+#include "initialise.h"
 
 #define syscall_MAGIC           0xf0f03410
 #define INODES_PER_BLOCK   128
