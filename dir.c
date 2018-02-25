@@ -1,10 +1,10 @@
 #include "all_include.h"
-#include "disk.h"
-#include "write_to_log.h"
-#include "syscall.h"
-#include "initialise.h"
-#include "dir.h"
-#include "file.h"
+// #include "disk.h"
+// #include "write_to_log.h"
+// #include "syscall.h"
+// #include "initialise.h"
+// #include "dir.h"
+// #include "file.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -25,6 +25,7 @@ dir_mkdir
 */
 int dir_mkdir(char * name){
 
+
 	a=file_open("a.txt");
 	a.file_read("a.txt",buffer);
 	while(buffer!=EOF)
@@ -33,5 +34,19 @@ int dir_mkdir(char * name){
 			printf("Directory already exists");
 	}
 	syscall_create_Inode();
+
+}
+
+/*
+dir_rmdir
+	- Get its inode
+		return fail if it does not exist
+	- Check type of file
+		cannot remove if its not a dir
+	- Check if its empty
+		
+*/
+int dir_rmdir(char * name){
+
 
 }

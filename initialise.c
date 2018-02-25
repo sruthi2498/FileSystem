@@ -1,10 +1,10 @@
 #include "all_include.h"
-#include "disk.h"
-#include "write_to_log.h"
-#include "syscall.h"
-#include "initialise.h"
-#include "dir.h"
-#include "file.h"
+// #include "disk.h"
+// #include "write_to_log.h"
+// #include "syscall.h"
+// #include "initialise.h"
+// #include "dir.h"
+// #include "file.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -181,8 +181,8 @@ int main(){
 	}
 	disk_attributes();
 	syscall_mount();
-
-	syscall_delete(134);
+	syscall_create_Inode();
+	//syscall_delete_Inode(134);
 	
 	// inode_atttributes_given_inodenumber(676);
 	// //syscall_inode_atttributes(146);
