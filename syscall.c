@@ -1,10 +1,10 @@
 #include "all_include.h"
-#include "disk.h"
-#include "write_to_log.h"
-#include "syscall.h"
-#include "initialise.h"
-#include "dir.h"
-#include "file.h"
+// #include "disk.h"
+// #include "write_to_log.h"
+// #include "syscall.h"
+// #include "initialise.h"
+// #include "dir.h"
+// #include "file.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -128,7 +128,7 @@ int syscall_create_Inode()
 			i_list[i].size = 0;
 
 			//Set time of creation
-			clock_gettime(CLOCK_REALTIME, &i_list[i].i_ctime);
+			//clock_gettime(CLOCK_REALTIME, &i_list[i].i_ctime);
 
 
 			//Get disk information 
@@ -140,11 +140,11 @@ int syscall_create_Inode()
 			disk_read(blocknumber, block.data);
 
 			//Update block with new inode information
-			block.data[block_offset] = i_list[i];
+			block.inode[block_offset] = i_list[i];
 			disk_write(blocknumber, block.data);
 
 			//Log creation
-			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum, i_list[i].i_ctime);
+			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum);
 			LogWrite("Created inode successfully\n");
 
 			return i;
@@ -197,9 +197,9 @@ int syscall_delete_Inode( int inumber )
 	for(int i=0;i<POINTERS_PER_INODE;i++){
 		if(Inode.direct[i]!=-1){ //if a valid data block exists
 			//free the data block in the bitmap
-			printf("\ndata block %d before freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
+			//printf("\ndata block %d before freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
 			free_block_bitmap[Inode.direct[i]]=0;
-			printf("\ndata block %d after freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
+			//printf("\ndata block %d after freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
 			//free the data block in the inode
 			Inode.direct[i]=-1;
 		}
