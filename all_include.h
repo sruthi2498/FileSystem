@@ -32,6 +32,15 @@
 #define NUMBER_OF_BLOCKS 256
 #define NUMBER_OF_INODE_BLOCKS 26
 #define NUMBER_OF_INODES NUMBER_OF_INODE_BLOCKS*INODES_PER_BLOCK
+#define DATABLOCK_START NUMBER_OF_BLOCKS-NUMBER_OF_INODE_BLOCKS-1
+
+#define ROOT_INODE_NUMBER 1
+
+//POSIX MACROS
+#define S_ISDIR 2
+
+
+static int CURR_ROOT_INODE_NUM = 1;
 
 static FILE *diskfile;
 static int nblocks=0;
@@ -60,6 +69,49 @@ union syscall_block {
 	int pointers[POINTERS_PER_BLOCK];
 	char data[DISK_BLOCK_SIZE];
 };
+
+
+//File information 
+struct fs_stat {
+	int			st_mode;
+	int			st_ino;
+	int			st_dev;
+	int			st_rdev;
+	int			st_nlink;
+	int			st_uid;
+	int 		st_gid;
+	int			st_size;
+	struct timespec	st_atim;
+	struct timespec	st_mtim;
+	struct timespec st_ctim;
+	int 		st_blksize;
+	int 		st_blocks;
+};
+
+//Contains file information like file status flags, current file offset, vnode pointer
+struct file_table_entry{
+	//file status flags
+
+	//current file offset
+	//int file_offset;
+
+	//inode num
+	int inode_num;
+}free_file_table_entries [20];
+
+
+//Contains file descriptor with pointer to file table entry
+struct file_desc{
+	int fd;
+	struct file_table_entry *fd_pointer;
+};
+
+//Contains an array of file descriptors and pointers to file table entries
+struct open_file_table{
+	struct file_desc fd_entry[20];
+};
+
+int free_file_desc[20];
 
 struct syscall_inode i_list[NUMBER_OF_INODES];
 
