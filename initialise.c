@@ -74,7 +74,7 @@ Set all datablocks to -1 in free_block_bitmap
 */
 initialise_free_block_bitmap(){
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
-		free_block_bitmap[i] = -1;
+		free_block_bitmap[i] = 0;
 	}
 }
 

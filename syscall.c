@@ -31,6 +31,8 @@ int syscall_format(int reset)
 		LogWrite("Disk init failed");
 		return 0;
 	}
+	//initialise filetable
+	syscall_initial_filetable()
 
 	//initialise superblock
 	int superret=init_superblock();
@@ -180,8 +182,8 @@ Find an available free datablock from free_block_bitmap
 int find_free_datablock(){
 
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
-		if(free_block_bitmap[i] == -1){
-			free_block_bitmap[i] = 1;
+		if(free_block_bitmap[i] == 0){
+			free_block_bitmap[i] = -1;
 			return i;
 		}
 	}
@@ -189,6 +191,30 @@ int find_free_datablock(){
 
 }
 
+
+int syscall_initial_filetable(){
+	int i;
+	//initialise all inode_numbers to -1.
+	for(i=0;i<20;i++)
+	{
+		free_file_table_entries[i].inode_num=-1;
+	}
+}
+
+int syscall_assign_filetable(){
+	int i;
+	//check the first available filetable entry 
+	for(i=0;i<20;i++)
+	{
+		if((free_file_table_entries[i].inode_num)==-1)
+			//assign it and declare it's inode number
+		{
+			free_file_table_entries[i].inode_num=syscall_create_Inode();
+			//return the index for file open table
+			return i;
+		}
+	}
+}
 
 /*
 Read specified inode from disk
