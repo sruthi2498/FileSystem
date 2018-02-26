@@ -234,7 +234,13 @@ int main(){
 	initialise_free_block_bitmap();
 	printf("initialising home directory ... \n");
 	initialise_homeDir();
-	syscall_create_Inode();
+	file_open("/"); 	//should return 0
+	file_open(".");		//should return -1
+	file_open("/.");     //should return 0
+	file_open("nope"); 	 //should return -1
+	file_open("/oui");    //should return -1
+
+	//syscall_create_Inode();
 	//syscall_delete_Inode(134);
 	
 	// inode_atttributes_given_inodenumber(676);

@@ -251,7 +251,7 @@ int syscall_create_default_dir(int inode_num){
 	//Read the block containing the inode information
 	struct syscall_inode Inode = ReadInode(inode_num);
 	int curr_dirent_block_num = Inode.direct[1];
-	printf("current dirent block num %d\n", curr_dirent_block_num);
+	//printf("current dirent block num %d\n", curr_dirent_block_num);
 	LogWrite("Read current directory's data block number\n");
 
 	//Read directory entries datablock

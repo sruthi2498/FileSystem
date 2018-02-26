@@ -16,6 +16,7 @@
 
 #include "write_to_log.h"
 #include "disk.h"
+//#include "namei.h"
 #include "syscall.h"
 #include "dir.h"
 #include "file.h"
