@@ -36,8 +36,9 @@
 
 #define ROOT_INODE_NUMBER 1
 
+#define MAX_DIR_ENTRIES 170		// size of block divided by size of directory entry = 4096 / 24
 //POSIX MACROS
-#define S_ISDIR 2
+//#define S_ISDIR 2
 
 
 static int CURR_ROOT_INODE_NUM = 1;
@@ -97,6 +98,7 @@ struct file_table_entry{
 
 	//inode num
 	int inode_num;
+
 }free_file_table_entries [20];
 
 
@@ -112,6 +114,14 @@ struct open_file_table{
 };
 
 int free_file_desc[20];
+
+
+//Directory entry structure
+struct dirent{
+	char entry_name[20];
+	int inode_num;
+};
+//20bytes + 4bytes
 
 struct syscall_inode i_list[NUMBER_OF_INODES];
 

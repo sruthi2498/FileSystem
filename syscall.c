@@ -109,6 +109,25 @@ int syscall_mount()
 	return 1;
 }
 
+
+/*
+Assigns 4 datablocks to every inode as part of its datablocks
+*/
+int syscall_assign_datablocks(int inode_num){
+	for(int x = 0; x<4 ;x++){
+		int free_datablock_num = find_free_datablock();
+		if(free_datablock_num != -1){
+			free_block_bitmap[free_datablock_num] = 1;
+			i_list[inode_num].direct[x] = free_datablock_num;
+		}
+		else{
+			return -1;
+		}
+	}
+	return 1;
+}
+
+
 /*
 syscall_create 
 	- Create a new inode of zero length
@@ -142,16 +161,12 @@ int syscall_create_Inode()
 			//Update inode information			
 			i_list[i].blocknum = blocknumber;
 
-			//assign a file/dir datablock (to be filled by file_create/dir_create functions)
-			int free_datablock_num = find_free_datablock();
-			if(free_datablock_num != -1){
-				free_block_bitmap[free_datablock_num] = 1;
-				i_list[i].direct[0] = free_datablock_num;
-			}
-			else{
-				LogWrite("No free datablocks! Cannot store file information\n");
+			//assign 4 datablocks (to be filled by file_create/dir_create functions)
+			int x = syscall_assign_datablocks(i);
+			if(x < 0){
 				i_list[i].isvalid = 0;
-				return 0;
+				LogWrite("No free datablocks! Cannot store file information\n");
+				return -1;
 			}
 
 			//Update block with new inode information

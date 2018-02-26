@@ -74,7 +74,7 @@ Set all datablocks to -1 in free_block_bitmap
 */
 initialise_free_block_bitmap(){
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
-		free_block_bitmap[i] = -1;
+		free_block_bitmap[i] = 0;
 	}
 }
 
@@ -192,6 +192,11 @@ void initialise_homeDir(){
 	LogWrite("Current root inode updated\n");
 }
 
+void print_sizeof_dirent(){
+	struct dirent dir_entry;
+	printf("sizeof: %d dirent\n", sizeof(dir_entry));
+}
+
 
 int main(){
 
@@ -226,7 +231,7 @@ int main(){
 	disk_attributes();
 	syscall_mount();
 	initialise_free_block_bitmap();
-	initialise_homeDir();
+	//initialise_homeDir();
 	syscall_create_Inode();
 	//syscall_delete_Inode(134);
 	
