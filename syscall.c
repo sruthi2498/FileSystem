@@ -139,9 +139,28 @@ int syscall_create_Inode()
 			printf("Reading block %d ... \n", blocknumber);
 			disk_read(blocknumber, block.data);
 
+			//Update inode information			
+			i_list[i].blocknum = blocknumber;
+
+			//assign a file/dir datablock (to be filled by file_create/dir_create functions)
+			int free_datablock_num = find_free_datablock();
+			if(free_datablock_num != -1){
+				free_block_bitmap[free_datablock_num] = 1;
+				i_list[i].direct[0] = free_datablock_num;
+			}
+			else{
+				LogWrite("No free datablocks! Cannot store file information\n");
+				i_list[i].isvalid = 0;
+				return 0;
+			}
+
 			//Update block with new inode information
 			block.inode[block_offset] = i_list[i];
+
+			//Write inode block back to disk
 			disk_write(blocknumber, block.data);
+
+
 
 			//Log creation
 			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum);
@@ -153,6 +172,23 @@ int syscall_create_Inode()
 	LogWrite("No free inodes! Out of space \n");
 	return 0;
 }
+
+
+/*
+Find an available free datablock from free_block_bitmap
+*/
+int find_free_datablock(){
+
+	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
+		if(free_block_bitmap[i] == -1){
+			free_block_bitmap[i] = 1;
+			return i;
+		}
+	}
+	return -1;
+
+}
+
 
 /*
 Read specified inode from disk

@@ -70,12 +70,22 @@ int calculate_offset_in_block(int inodenumber,int blocknum){
 }
 
 /*
+Set all datablocks to -1 in free_block_bitmap
+*/
+initialise_free_block_bitmap(){
+	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
+		free_block_bitmap[i] = -1;
+	}
+}
+
+/*
 Go through all inodes
 Caculate block number and offset for them
 add it to i-list
 */
 int initialise_empty_inodes(int reset){
 	for(int i=0;i<NUMBER_OF_INODES;i++){
+		i_list[i].isvalid = 0;
 		i_list[i].blocknum=calculate_block_for_inode(i);
 		i_list[i].offset_in_block=calculate_offset_in_block(i,i_list[i].blocknum);
 		if(reset){ //set all data blocks to -1
@@ -148,6 +158,40 @@ void inode_atttributes_given_inode(struct syscall_inode Inode){
 	printf("\n");
 }
 
+void initialise_homeDir(){
+
+	LogWrite("Creating home dir...\n");
+	//Create an inode
+	int curr_inode_num = syscall_create_Inode();
+	if(curr_inode_num < 0){
+		LogWrite("Home directory inode creation failed\n");
+	}
+	//Read the block containing the inode information
+	struct syscall_inode curr_inode = ReadInode(curr_inode_num);
+
+	//Initialise the file/dir data block with file information	
+	struct fs_stat stat_buf;
+	stat_buf.st_mode = S_ISDIR;
+	stat_buf.st_ino = curr_inode_num;
+	stat_buf.st_nlink = 2;
+	//stat_buf.st_uid ;
+	//stat_buf.st_gid ;
+	//stat_buf.st_size ;
+	//stat_buf.st_atim ;
+	//stat_buf.st_mtim ;
+	clock_gettime(CLOCK_REALTIME, &stat_buf.st_ctim);
+	//stat_buf.st_blksize ;
+	stat_buf.st_blocks = 2;
+
+	disk_write(curr_inode.direct[0], &stat_buf);
+
+	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
+
+	LogWrite("Created home directory successfully\n");
+	CURR_ROOT_INODE_NUM = curr_inode_num;
+	LogWrite("Current root inode updated\n");
+}
+
 
 int main(){
 
@@ -181,6 +225,8 @@ int main(){
 	}
 	disk_attributes();
 	syscall_mount();
+	initialise_free_block_bitmap();
+	initialise_homeDir();
 	syscall_create_Inode();
 	//syscall_delete_Inode(134);
 	
