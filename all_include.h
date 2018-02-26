@@ -25,6 +25,7 @@
 #define INODES_PER_BLOCK   128
 #define POINTERS_PER_INODE 4
 #define POINTERS_PER_BLOCK INODES_PER_BLOCK * POINTERS_PER_INODE
+#define MAX_FD 20
 
 #define DISK_BLOCK_SIZE  4096// each block
 #define DISK_MAGIC 0xdeadbeef 
@@ -97,7 +98,7 @@ struct file_table_entry{
 
 	//inode num
 	int inode_num;
-}free_file_table_entries [20];
+}free_file_table_entries [MAX_FD];
 
 
 //Contains file descriptor with pointer to file table entry
@@ -108,10 +109,12 @@ struct file_desc{
 
 //Contains an array of file descriptors and pointers to file table entries
 struct open_file_table{
-	struct file_desc fd_entry[20];
+	struct file_desc fd_entry[MAX_FD];
+	int count_used_file_descriptors;
 };
 
-int free_file_desc[20];
+//list of free file descriptors
+int free_file_desc[MAX_FD];
 
 struct syscall_inode i_list[NUMBER_OF_INODES];
 

@@ -180,8 +180,8 @@ Find an available free datablock from free_block_bitmap
 int find_free_datablock(){
 
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
-		if(free_block_bitmap[i] == -1){
-			free_block_bitmap[i] = 1;
+		if(free_block_bitmap[i] == 0){
+			free_block_bitmap[i] = -1;
 			return i;
 		}
 	}
@@ -277,6 +277,22 @@ int syscall_getsize( int inumber )
 	Inode=ReadInode(inumber);
 	return Inode.size;
 }
+
+/*
+syscall_find_next_free_file_descriptor
+	- go through free_file_desc
+	- find next free one
+	- set it to 1
+*/
+int syscall_find_next_free_file_descriptor(){
+	for(int i=0;i<MAX_FD;i++){
+		if(free_file_desc[i]==0){
+			return i;
+		}
+	}
+	return -1;
+}
+
 
 /* 
 syscall_read 
