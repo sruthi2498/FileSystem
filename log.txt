@@ -1,64 +1,68 @@
-Mon Feb 26 10:17:28 2018: System Format
-Mon Feb 26 10:17:28 2018: Completed initialising disk
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Superblock initialised
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Writing to disk completed
-Mon Feb 26 10:17:28 2018: Completed Initialising empty inodes
-Mon Feb 26 10:17:28 2018: Printing disk attributes
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Disk is valid
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: Free Block Bitmap created
-Mon Feb 26 10:17:28 2018: Reading from disk completed
-Mon Feb 26 10:17:28 2018: No free datablocks! Cannot store file information
+Mon Feb 26 18:53:51 2018: System Format
+Mon Feb 26 18:53:51 2018: Completed initialising disk
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Superblock initialised
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Writing to disk completed
+Mon Feb 26 18:53:51 2018: Completed Initialising empty inodes
+Mon Feb 26 18:53:51 2018: Printing disk attributes
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Disk is valid
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: Free Block Bitmap created
+Mon Feb 26 18:53:51 2018: Creating home dir...
+Mon Feb 26 18:53:51 2018: Reading from disk completed
+Mon Feb 26 18:53:51 2018: No free datablocks! Cannot store file information
+Mon Feb 26 18:53:51 2018: Home directory inode creation failed
+Mon Feb 26 18:53:51 2018: 
+Invalid Inode numberMon Feb 26 18:53:51 2018: ERROR: blocknum is negative

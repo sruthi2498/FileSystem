@@ -8,4 +8,5 @@ void inode_atttributes_given_inode(struct syscall_inode Inode);
 int calculate_block_for_inode(int inodenumber);
 int calculate_offset_in_block(int inodenumber,int blocknum); 
 
+void initialise_homeDir();
 

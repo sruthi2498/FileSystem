@@ -34,7 +34,9 @@
 #define NUMBER_OF_INODES NUMBER_OF_INODE_BLOCKS*INODES_PER_BLOCK
 #define DATABLOCK_START NUMBER_OF_BLOCKS-NUMBER_OF_INODE_BLOCKS-1
 
-#define ROOT_INODE_NUMBER 1
+#define MAX_FD 20
+
+#define ROOT_INODE_NUMBER 0
 
 #define MAX_DIR_ENTRIES 170		// size of block divided by size of directory entry = 4096 / 24
 //POSIX MACROS
@@ -48,6 +50,28 @@ static int nblocks=0;
 static int nreads=0;
 static int nwrites=0;
 
+//Directory entry structure
+struct syscall_dirent{
+	char entry_name[MAX_FD];
+	int inode_num;
+};
+
+//Stat file information structure
+struct syscall_stat {
+	int			st_mode;
+	int			st_ino;
+	int			st_dev;
+	int			st_rdev;
+	int			st_nlink;
+	int			st_uid;
+	int 		st_gid;
+	int			st_size;
+	struct timespec	st_atim;
+	struct timespec	st_mtim;
+	struct timespec st_ctim;
+	int 		st_blksize;
+	int 		st_blocks;
+};
 
 struct syscall_superblock {
 	int magic;
@@ -69,25 +93,11 @@ union syscall_block {
 	struct syscall_inode inode[INODES_PER_BLOCK];
 	int pointers[POINTERS_PER_BLOCK];
 	char data[DISK_BLOCK_SIZE];
+	struct syscall_dirent dir_entries[MAX_DIR_ENTRIES];
+	struct syscall_stat stat_info;
 };
 
 
-//File information 
-struct fs_stat {
-	int			st_mode;
-	int			st_ino;
-	int			st_dev;
-	int			st_rdev;
-	int			st_nlink;
-	int			st_uid;
-	int 		st_gid;
-	int			st_size;
-	struct timespec	st_atim;
-	struct timespec	st_mtim;
-	struct timespec st_ctim;
-	int 		st_blksize;
-	int 		st_blocks;
-};
 
 //Contains file information like file status flags, current file offset, vnode pointer
 struct file_table_entry{
@@ -114,14 +124,6 @@ struct open_file_table{
 };
 
 int free_file_desc[20];
-
-
-//Directory entry structure
-struct dirent{
-	char entry_name[20];
-	int inode_num;
-};
-//20bytes + 4bytes
 
 struct syscall_inode i_list[NUMBER_OF_INODES];
 

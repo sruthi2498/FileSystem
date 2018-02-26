@@ -24,16 +24,17 @@ int namei(const char *path){
 		LogWrite("Invalid pathname");
 		return -1;
 	}
-	
-	//Initialize current directory (always root)
-	int dir_inode_num = ROOT_INODE_NUMBER;
+
+	int dir_inode_num;
 	struct syscall_inode curr_dir;
-	curr_dir = ReadInode(dir_inode_num);
-	
-	int next_inode = -1;
+	int next_inode = ROOT_INODE_NUMBER;
 	//Read each pathname component into a buffer
 	int i = 1;
 	while((path[i] != NULL) ){
+
+		//Initialize current directory (always root)
+		dir_inode_num = next_inode;
+		curr_dir = ReadInode(dir_inode_num);
 
 		//Read componenent into buffer (max size for filename is 20)
 		char* buffer[20];
@@ -50,29 +51,41 @@ int namei(const char *path){
 
 		//If next_inode is not -1, i.e found, update dir_inode_num
 
-
 	}
-
+	return next_inode;
 	//return next_inode
 
 }
 
-int dir_entry_exists(struct syscall_inode *curr_dir, char *buffer){
+int dir_entry_exists(struct syscall_inode curr_dir_inode, char *buffer){
 	
-	struct dirent dir_entry;
+	struct syscall_dirent dir_entry;
 
-	//Read datablock[1] from inode
+	//Read datablock[1] from inode -> datablock 1 is always current directory entries
+	union syscall_block block;
+
+	disk_read(curr_dir_inode.direct[1], &block);
+
+	//Create structure to read directory entries
+	//Note that 0th entry is number of directory entries
+	int num_entries = block.dir_entries[0].inode_num;
+	char dir_entry_name[MAX_FD];
 
 	//Loop in array of dirents
+	for(int i=1; i<=num_entries; i++){
+		strcpy(block.dir_entries[i].entry_name, dir_entry_name);
 
 		//If name exists, return inode
+		if(strcmp(buffer, dir_entry_name) == 0){
+			return block.dir_entries[i].inode_num;
+		}
+	}
 
-	//return -1 
 	return -1;
 }
 
 
-int read_component(char * path, char * buffer, int path_offset){
+int read_component(char * path, char *buffer, int path_offset){
 	int i = path_offset;
 	int j = 0;
 	while((path[i] != '/') && (path[i] != NULL)){

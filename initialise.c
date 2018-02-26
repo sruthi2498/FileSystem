@@ -166,35 +166,27 @@ void initialise_homeDir(){
 	if(curr_inode_num < 0){
 		LogWrite("Home directory inode creation failed\n");
 	}
-	//Read the block containing the inode information
-	struct syscall_inode curr_inode = ReadInode(curr_inode_num);
+	else{
+		printf("Home directory initialised\n");
+		LogWrite("Created node successfully for home directory\n");
+	}
 
 	//Initialise the file/dir data block with file information	
-	struct fs_stat stat_buf;
-	stat_buf.st_mode = S_ISDIR;
-	stat_buf.st_ino = curr_inode_num;
-	stat_buf.st_nlink = 2;
-	//stat_buf.st_uid ;
-	//stat_buf.st_gid ;
-	//stat_buf.st_size ;
-	//stat_buf.st_atim ;
-	//stat_buf.st_mtim ;
-	clock_gettime(CLOCK_REALTIME, &stat_buf.st_ctim);
-	//stat_buf.st_blksize ;
-	stat_buf.st_blocks = 2;
-
-	disk_write(curr_inode.direct[0], &stat_buf);
+	if(syscall_initialise_file_info(curr_inode_num) < 0){
+		LogWrite("Initialising file info failed\n");
+		return -1;
+	}
 
 	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
+	if(syscall_create_default_dir(curr_inode_num) < 0){
+		LogWrite("Creating default directories . and .. failed\n");
+		return -1;
+	}
 
 	LogWrite("Created home directory successfully\n");
 	CURR_ROOT_INODE_NUM = curr_inode_num;
 	LogWrite("Current root inode updated\n");
-}
-
-void print_sizeof_dirent(){
-	struct dirent dir_entry;
-	printf("sizeof: %d dirent\n", sizeof(dir_entry));
+	return 1;
 }
 
 
@@ -231,6 +223,7 @@ int main(){
 	disk_attributes();
 	syscall_mount();
 	initialise_free_block_bitmap();
+	//printf("initialising home directory ... \n");
 	//initialise_homeDir();
 	syscall_create_Inode();
 	//syscall_delete_Inode(134);

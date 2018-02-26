@@ -204,6 +204,67 @@ int find_free_datablock(){
 
 }
 
+int syscall_initialise_file_info(int inode_num){
+
+	//Read the block containing the inode information
+	struct syscall_inode Inode = ReadInode(inode_num);
+	int stat_block_num = Inode.direct[0];
+
+	//Read the stat block from inode
+	union syscall_block block;
+	disk_read(stat_block_num, &block);
+
+	//Set inodeNumber, number of hard links, inode status change time na number of blocks it occupies
+	//struct fs_stat stat_buf;
+	//stat_buf.st_mode = S_ISDIR;
+	block.stat_info.st_ino = inode_num;
+	block.stat_info.st_nlink = 2;
+	//stat_buf.st_uid ;
+	//stat_buf.st_gid ;
+	//stat_buf.st_size ;
+	//stat_buf.st_atim ;
+	//stat_buf.st_mtim ;
+	clock_gettime(CLOCK_REALTIME, &block.stat_info.st_ctim);
+	//stat_buf.st_blksize ;
+	block.stat_info.st_blocks = 4;
+
+	disk_write(stat_block_num, &block);
+
+	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d\nst_ctim %d\nst_blocks %d\n",
+		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_ctim, block.stat_info.st_blocks);
+	LogWrite("Initialized stat file info");
+	return 1;
+
+}
+
+int syscall_create_default_dir(inode_num){
+
+	//Read the block containing the inode information
+	struct syscall_inode Inode = ReadInode(inode_num);
+	int curr_dirent_block_num = Inode.direct[0];
+
+	//Read directory entries datablock
+	union syscall_block block;
+	disk_read(curr_dirent_block_num, &block);
+
+	//Update the currenty directory listing block
+	//Note that the first array entry is number of dirents
+	int num_dirents = block.dir_entries[0].inode_num;
+
+	//Create . directory	
+	num_dirents++;
+	strcpy(".", block.dir_entries[num_dirents].entry_name);
+
+	num_dirents++;
+	strcpy("..", block.dir_entries[num_dirents].entry_name);
+
+	//Set number of dirents to 2
+	block.dir_entries[0].inode_num = num_dirents;
+	disk_write(curr_dirent_block_num, &block);
+
+	return 1;
+}
+
 
 /*
 Read specified inode from disk
