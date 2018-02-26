@@ -161,13 +161,14 @@ void inode_atttributes_given_inode(struct syscall_inode Inode){
 void initialise_homeDir(){
 
 	LogWrite("Creating home dir...\n");
+	printf("in initialise_homeDir\n");
 	//Create an inode
 	int curr_inode_num = syscall_create_Inode();
 	if(curr_inode_num < 0){
 		LogWrite("Home directory inode creation failed\n");
 	}
 	else{
-		printf("Home directory initialised\n");
+		printf("Home directory inode initialised\n");
 		LogWrite("Created node successfully for home directory\n");
 	}
 
@@ -176,15 +177,23 @@ void initialise_homeDir(){
 		LogWrite("Initialising file info failed\n");
 		return -1;
 	}
+	else{
+		LogWrite("Stat file info initialised successfully\n");
+	}
+
 
 	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
+	printf("Calling create default dir\n");
 	if(syscall_create_default_dir(curr_inode_num) < 0){
 		LogWrite("Creating default directories . and .. failed\n");
 		return -1;
 	}
+	else{
+		LogWrite("Default directories created successfully\n");
+	}
 
 	LogWrite("Created home directory successfully\n");
-	CURR_ROOT_INODE_NUM = curr_inode_num;
+	//CURR_ROOT_INODE_NUM = curr_inode_num;
 	LogWrite("Current root inode updated\n");
 	return 1;
 }
@@ -223,8 +232,8 @@ int main(){
 	disk_attributes();
 	syscall_mount();
 	initialise_free_block_bitmap();
-	//printf("initialising home directory ... \n");
-	//initialise_homeDir();
+	printf("initialising home directory ... \n");
+	initialise_homeDir();
 	syscall_create_Inode();
 	//syscall_delete_Inode(134);
 	

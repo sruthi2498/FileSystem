@@ -116,6 +116,7 @@ Assigns 4 datablocks to every inode as part of its datablocks
 int syscall_assign_datablocks(int inode_num){
 	for(int x = 0; x<4 ;x++){
 		int free_datablock_num = find_free_datablock();
+		printf("free_datablock_num %d \t", free_datablock_num);
 		if(free_datablock_num != -1){
 			free_block_bitmap[free_datablock_num] = 1;
 			i_list[inode_num].direct[x] = free_datablock_num;
@@ -124,6 +125,7 @@ int syscall_assign_datablocks(int inode_num){
 			return -1;
 		}
 	}
+	printf("\n");
 	return 1;
 }
 
@@ -194,9 +196,10 @@ Find an available free datablock from free_block_bitmap
 */
 int find_free_datablock(){
 
+	//printf("datablock_start %d", DATABLOCK_START);
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
-		if(free_block_bitmap[i] == -1){
-			free_block_bitmap[i] = 1;
+		if(free_block_bitmap[i] == 0){
+			free_block_bitmap[i] = -1;
 			return i;
 		}
 	}
@@ -228,20 +231,28 @@ int syscall_initialise_file_info(int inode_num){
 	//stat_buf.st_blksize ;
 	block.stat_info.st_blocks = 4;
 
+	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
+		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
 	disk_write(stat_block_num, &block);
 
-	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d\nst_ctim %d\nst_blocks %d\n",
-		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_ctim, block.stat_info.st_blocks);
-	LogWrite("Initialized stat file info");
+	
+	//LogWrite("Initialized stat file info\n");
 	return 1;
 
 }
 
-int syscall_create_default_dir(inode_num){
+
+
+int syscall_create_default_dir(int inode_num){
+
+	//Keeps track of number of directory entries
+	int num_dirents = 0;
 
 	//Read the block containing the inode information
 	struct syscall_inode Inode = ReadInode(inode_num);
-	int curr_dirent_block_num = Inode.direct[0];
+	int curr_dirent_block_num = Inode.direct[1];
+	printf("current dirent block num %d\n", curr_dirent_block_num);
+	LogWrite("Read current directory's data block number\n");
 
 	//Read directory entries datablock
 	union syscall_block block;
@@ -249,14 +260,17 @@ int syscall_create_default_dir(inode_num){
 
 	//Update the currenty directory listing block
 	//Note that the first array entry is number of dirents
-	int num_dirents = block.dir_entries[0].inode_num;
+	LogWrite("Updating current directory listing\n");
 
 	//Create . directory	
-	num_dirents++;
-	strcpy(".", block.dir_entries[num_dirents].entry_name);
+	num_dirents += 1;
+	strcpy(block.dir_entries[num_dirents].entry_name, ".");
+	block.dir_entries[num_dirents].inode_num = ROOT_INODE_NUMBER;	
 
+	//Create .. directory
 	num_dirents++;
-	strcpy("..", block.dir_entries[num_dirents].entry_name);
+	strcpy(block.dir_entries[num_dirents].entry_name, "..");
+	block.dir_entries[num_dirents].inode_num = ROOT_INODE_NUMBER;
 
 	//Set number of dirents to 2
 	block.dir_entries[0].inode_num = num_dirents;
