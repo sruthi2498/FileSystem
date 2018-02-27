@@ -43,9 +43,6 @@
 //POSIX MACROS
 //#define S_ISDIR 2
 
-
-static int CURR_ROOT_INODE_NUM = 1;
-
 static FILE *diskfile;
 static int nblocks=0;
 static int nreads=0;
@@ -74,6 +71,9 @@ struct syscall_stat {
 	int 		st_blocks;
 };
 
+
+
+//DISK STRUCTURES
 struct syscall_superblock {
 	int magic;
 	int nblocks;
@@ -100,6 +100,7 @@ union syscall_block {
 
 
 
+//FILE STRUCTURES
 //Contains file information like file status flags, current file offset, vnode pointer
 struct file_table_entry{
 	//file status flags
@@ -124,8 +125,11 @@ struct open_file_table{
 	struct file_desc fd_entry[20];
 };
 
+//Free file descriptors bitmap
 int free_file_desc[20];
 
+//Free inodes bitmap
 struct syscall_inode i_list[NUMBER_OF_INODES];
 
+//Free block bitmap
 int free_block_bitmap[NUMBER_OF_BLOCKS];

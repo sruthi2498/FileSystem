@@ -14,6 +14,9 @@ int  syscall_getsize();
 int  syscall_read( int inumber, char *data, int length, int offset );
 int  syscall_write( int inumber, const char *data, int length, int offset );
 
+int syscall_assign_datablocks(int inode_num);
+int syscall_find_free_datablock();
+
 int syscall_initialise_file_info(int inode_num);
 int syscall_create_default_dir(int inode_num);
 

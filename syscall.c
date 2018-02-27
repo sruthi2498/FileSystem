@@ -111,11 +111,11 @@ int syscall_mount()
 
 
 /*
-Assigns 4 datablocks to every inode as part of its datablocks
+Given inode number, assigns 4 datablocks to every inode as part of its datablocks
 */
 int syscall_assign_datablocks(int inode_num){
 	for(int x = 0; x<4 ;x++){
-		int free_datablock_num = find_free_datablock();
+		int free_datablock_num = syscall_find_free_datablock();
 		printf("free_datablock_num %d \t", free_datablock_num);
 		if(free_datablock_num != -1){
 			free_block_bitmap[free_datablock_num] = 1;
@@ -194,7 +194,7 @@ int syscall_create_Inode()
 /*
 Find an available free datablock from free_block_bitmap
 */
-int find_free_datablock(){
+int syscall_find_free_datablock(){
 
 	//printf("datablock_start %d", DATABLOCK_START);
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
@@ -207,7 +207,7 @@ int find_free_datablock(){
 
 }
 
-int syscall_initialise_file_info(int inode_num){
+int syscall_initialise_file_info(int inode_num, int file_type){
 
 	//Read the block containing the inode information
 	struct syscall_inode Inode = ReadInode(inode_num);
