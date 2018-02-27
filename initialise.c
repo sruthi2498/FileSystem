@@ -161,7 +161,6 @@ void inode_atttributes_given_inode(struct syscall_inode Inode){
 void initialise_homeDir(){
 
 	LogWrite("Creating home dir...\n");
-	printf("in initialise_homeDir\n");
 	//Create an inode
 	int curr_inode_num = syscall_create_Inode();
 	if(curr_inode_num < 0){
@@ -171,6 +170,8 @@ void initialise_homeDir(){
 		printf("Home directory inode initialised\n");
 		LogWrite("Created node successfully for home directory\n");
 	}
+//Read the block containing the inode information
+	struct syscall_inode curr_inode = ReadInode(curr_inode_num);
 
 	//Initialise the file/dir data block with file information
 	//NOTE: 2 is to be replaced with S_ISDIR flag!!!!	
@@ -194,7 +195,7 @@ void initialise_homeDir(){
 	}
 
 	LogWrite("Created home directory successfully\n");
-	//CURR_ROOT_INODE_NUM = curr_inode_num;
+
 	LogWrite("Current root inode updated\n");
 	return 1;
 }
@@ -233,7 +234,6 @@ int main(){
 	disk_attributes();
 	syscall_mount();
 	initialise_free_block_bitmap();
-	printf("initialising home directory ... \n");
 	initialise_homeDir();
 	file_open("/"); 	//should return 0
 	file_open(".");		//should return -1

@@ -1,0 +1,1 @@
+int file_open(char * pathname);

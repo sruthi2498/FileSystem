@@ -31,6 +31,8 @@ int syscall_format(int reset)
 		LogWrite("Disk init failed");
 		return 0;
 	}
+	//initialise filetable
+	syscall_initial_filetable()
 
 	//initialise superblock
 	int superret=init_superblock();
@@ -280,6 +282,30 @@ int syscall_create_default_dir(int inode_num){
 }
 
 
+int syscall_initial_filetable(){
+	int i;
+	//initialise all inode_numbers to -1.
+	for(i=0;i<20;i++)
+	{
+		free_file_table_entries[i].inode_num=-1;
+	}
+}
+
+int syscall_assign_filetable(){
+	int i;
+	//check the first available filetable entry 
+	for(i=0;i<20;i++)
+	{
+		if((free_file_table_entries[i].inode_num)==-1)
+			//assign it and declare it's inode number
+		{
+			free_file_table_entries[i].inode_num=syscall_create_Inode();
+			//return the index for file open table
+			return i;
+		}
+	}
+}
+
 /*
 Read specified inode from disk
 */
@@ -367,6 +393,22 @@ int syscall_getsize( int inumber )
 	Inode=ReadInode(inumber);
 	return Inode.size;
 }
+
+/*
+syscall_find_next_free_file_descriptor
+	- go through free_file_desc
+	- find next free one
+	- set it to 1
+*/
+int syscall_find_next_free_file_descriptor(){
+	for(int i=0;i<MAX_FD;i++){
+		if(free_file_desc[i]==0){
+			return i;
+		}
+	}
+	return -1;
+}
+
 
 /* 
 syscall_read 
