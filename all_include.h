@@ -13,6 +13,7 @@
 #include <stddef.h>
 #include <assert.h>
 #include <time.h>
+#include <sys/stat.h>
 
 #include "write_to_log.h"
 #include "disk.h"
@@ -37,8 +38,6 @@
 
 #define ROOT_INODE_NUMBER 1
 
-//POSIX MACROS
-#define S_ISDIR 2
 
 
 static int CURR_ROOT_INODE_NUM = 1;
@@ -98,20 +97,20 @@ struct file_table_entry{
 
 	//inode num
 	int inode_num;
-}free_file_table_entries [MAX_FD];
+}file_table_entries [MAX_FD];
 
 
 //Contains file descriptor with pointer to file table entry
 struct file_desc{
-	int fd;
-	struct file_table_entry *fd_pointer;
+	int fd;         //index of file_dex in array fd_entry
+	int fd_pointer; //pointer to file_table_entry
 };
 
 //Contains an array of file descriptors and pointers to file table entries
 struct open_file_table{
 	struct file_desc fd_entry[MAX_FD];
 	int count_used_file_descriptors;
-};
+}Open_file_table;
 
 //list of free file descriptors
 int free_file_desc[MAX_FD];

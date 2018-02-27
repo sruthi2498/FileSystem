@@ -32,7 +32,7 @@ int syscall_format(int reset)
 		return 0;
 	}
 	//initialise filetable
-	syscall_initial_filetable()
+	syscall_initial_filetable();
 
 	//initialise superblock
 	int superret=init_superblock();
@@ -44,7 +44,9 @@ int syscall_format(int reset)
 	//initialise empty inodes
 	int inoderet=initialise_empty_inodes(reset);
 	if(inoderet!=1) return 0;
-	
+
+	int init_filetable=syscall_initial_filetable();
+	if(init_filetable!=1) return 0;
 	return 1;
 }
 
@@ -184,36 +186,51 @@ int find_free_datablock(){
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
 		if(free_block_bitmap[i] == 0){
 			free_block_bitmap[i] = -1;
+			LogWrite("Found free data block\n");
 			return i;
 		}
 	}
+	LogWrite("No free data block\n");
 	return -1;
 
 }
 
-
+/*
+syscall_initial_filetable()
+	-initialise all inode_numbers to -1.
+*/
 int syscall_initial_filetable(){
 	int i;
-	//initialise all inode_numbers to -1.
+	LogWrite("Initialising file table (all inode entries -1)\n");
+	Open_file_table.count_used_file_descriptors=0;
 	for(i=0;i<20;i++)
 	{
-		free_file_table_entries[i].inode_num=-1;
+		file_table_entries[i].inode_num=-1;
 	}
+	return 1;
 }
 
+/*
+syscall_assign_filetable()
+	-check the first available filetable entry	
+	-assign it and declare it's inode number
+*/
 int syscall_assign_filetable(){
 	int i;
 	//check the first available filetable entry 
 	for(i=0;i<20;i++)
 	{
-		if((free_file_table_entries[i].inode_num)==-1)
+		if((file_table_entries[i].inode_num)==-1)
 			//assign it and declare it's inode number
 		{
-			free_file_table_entries[i].inode_num=syscall_create_Inode();
+			file_table_entries[i].inode_num=syscall_create_Inode();
 			//return the index for file open table
+			LogWrite("Found file table entry\n");
 			return i;
 		}
 	}
+	LogWrite("No free file table entry\n");
+	return -1;
 }
 
 /*
@@ -313,12 +330,43 @@ syscall_find_next_free_file_descriptor
 int syscall_find_next_free_file_descriptor(){
 	for(int i=0;i<MAX_FD;i++){
 		if(free_file_desc[i]==0){
+			LogWrite("Found free file descriptor\n");
+			Open_file_table.count_used_file_descriptors++;
 			return i;
 		}
 	}
+	LogWrite("No free file descriptor found\n");
 	return -1;
 }
 
+/*
+ syscall_find_fd_for_inodenum
+ 	-return fd for inodenum
+*/
+int syscall_find_fd_for_inodenum(int inodenumber){
+	// go through file_table_entries
+	// find index for inode -> fd_pointer
+	int i=0;
+	int fd_pointer=-1;
+	while(i<MAX_FD){
+		if(file_table_entries[i].inode_num==inodenumber){
+			fd_pointer=i;
+			i=MAX_FD;
+		}
+		i++;
+	}
+	//go through fd_entry 
+	i=0;
+	int fd=-1;
+	while(i<MAX_FD){
+		if(Open_file_table.fd_entry[i].fd_pointer==fd_pointer){
+			fd=i;
+			i=MAX_FD;
+		}
+		i++;
+	}
+	return fd;
+}
 
 /* 
 syscall_read 

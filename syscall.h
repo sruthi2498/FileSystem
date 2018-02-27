@@ -15,5 +15,9 @@ int  syscall_read( int inumber, char *data, int length, int offset );
 int  syscall_write( int inumber, const char *data, int length, int offset );
 
 int syscall_find_next_free_file_descriptor();
+int syscall_initial_filetable();
+int syscall_assign_filetable();
+
+int syscall_find_fd_for_inodenum(int inode_num);
 
 #endif

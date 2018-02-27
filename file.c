@@ -17,13 +17,9 @@ int file_open(char * pathname){
 	//Find node from pathname
 		//Check if file does not exist
 
-	// allocate file table entry for node, initialize count, offset;
+	//get fd
+	//get file table entry
 	
-	// allocate file descriptor entry, set pointer to file table entry;
-	
-	// if (type of open specifies truncate file)
-		//free all file blocks (algorithm free);
-
 	//return (file descriptor);
 }
 
