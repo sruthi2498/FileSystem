@@ -54,6 +54,9 @@ static int fs_rmdir(const char *path) {
    
 }
 
+static int utime(const char * path, struct utimbuf * timebuf){
+	//syscall_utime()
+}
 
 static struct fuse_operations fs_oper = {
 	.getattr	= fs_getattr,
@@ -67,5 +70,6 @@ static struct fuse_operations fs_oper = {
 
 int main(int argc, char *argv[]){
 	ResetLog();
+	//create_fs();
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }

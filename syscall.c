@@ -1,10 +1,10 @@
 #include "all_include.h"
-#include "disk.h"
-#include "write_to_log.h"
-#include "syscall.h"
-#include "initialise.h"
-#include "dir.h"
-#include "file.h"
+// #include "disk.h"
+// #include "write_to_log.h"
+// #include "syscall.h"
+// #include "initialise.h"
+// #include "dir.h"
+// #include "file.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -109,6 +109,27 @@ int syscall_mount()
 	return 1;
 }
 
+
+/*
+Given inode number, assigns 4 datablocks to every inode as part of its datablocks
+*/
+int syscall_assign_datablocks(int inode_num){
+	for(int x = 0; x<4 ;x++){
+		int free_datablock_num = syscall_find_free_datablock();
+		printf("free_datablock_num %d \t", free_datablock_num);
+		if(free_datablock_num != -1){
+			free_block_bitmap[free_datablock_num] = 1;
+			i_list[inode_num].direct[x] = free_datablock_num;
+		}
+		else{
+			return -1;
+		}
+	}
+	printf("\n");
+	return 1;
+}
+
+
 /*
 syscall_create 
 	- Create a new inode of zero length
@@ -128,7 +149,7 @@ int syscall_create_Inode()
 			i_list[i].size = 0;
 
 			//Set time of creation
-			clock_gettime(CLOCK_REALTIME, &i_list[i].i_ctime);
+			//clock_gettime(CLOCK_REALTIME, &i_list[i].i_ctime);
 
 
 			//Get disk information 
@@ -139,12 +160,27 @@ int syscall_create_Inode()
 			printf("Reading block %d ... \n", blocknumber);
 			disk_read(blocknumber, block.data);
 
+			//Update inode information			
+			i_list[i].blocknum = blocknumber;
+
+			//assign 4 datablocks (to be filled by file_create/dir_create functions)
+			int x = syscall_assign_datablocks(i);
+			if(x < 0){
+				i_list[i].isvalid = 0;
+				LogWrite("No free datablocks! Cannot store file information\n");
+				return -1;
+			}
+
 			//Update block with new inode information
-			block.data[block_offset] = i_list[i];
+			block.inode[block_offset] = i_list[i];
+
+			//Write inode block back to disk
 			disk_write(blocknumber, block.data);
 
+
+
 			//Log creation
-			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum, i_list[i].i_ctime);
+			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum);
 			LogWrite("Created inode successfully\n");
 
 			return i;
@@ -153,6 +189,96 @@ int syscall_create_Inode()
 	LogWrite("No free inodes! Out of space \n");
 	return 0;
 }
+
+
+/*
+Find an available free datablock from free_block_bitmap
+*/
+int syscall_find_free_datablock(){
+
+	//printf("datablock_start %d", DATABLOCK_START);
+	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
+		if(free_block_bitmap[i] == 0){
+			free_block_bitmap[i] = -1;
+			return i;
+		}
+	}
+	return -1;
+
+}
+
+int syscall_initialise_file_info(int inode_num, int file_type){
+
+	//Read the block containing the inode information
+	struct syscall_inode Inode = ReadInode(inode_num);
+	int stat_block_num = Inode.direct[0];
+
+	//Read the stat block from inode
+	union syscall_block block;
+	disk_read(stat_block_num, &block);
+
+	//Set inodeNumber, number of hard links, inode status change time na number of blocks it occupies
+	//struct fs_stat stat_buf;
+	//stat_buf.st_mode = S_ISDIR;
+	block.stat_info.st_ino = inode_num;
+	block.stat_info.st_nlink = 2;
+	//stat_buf.st_uid ;
+	//stat_buf.st_gid ;
+	//stat_buf.st_size ;
+	//stat_buf.st_atim ;
+	//stat_buf.st_mtim ;
+	clock_gettime(CLOCK_REALTIME, &block.stat_info.st_ctim);
+	//stat_buf.st_blksize ;
+	block.stat_info.st_blocks = 4;
+
+	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
+		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
+	disk_write(stat_block_num, &block);
+
+	
+	//LogWrite("Initialized stat file info\n");
+	return 1;
+
+}
+
+
+
+int syscall_create_default_dir(int inode_num){
+
+	//Keeps track of number of directory entries
+	int num_dirents = 0;
+
+	//Read the block containing the inode information
+	struct syscall_inode Inode = ReadInode(inode_num);
+	int curr_dirent_block_num = Inode.direct[1];
+	//printf("current dirent block num %d\n", curr_dirent_block_num);
+	LogWrite("Read current directory's data block number\n");
+
+	//Read directory entries datablock
+	union syscall_block block;
+	disk_read(curr_dirent_block_num, &block);
+
+	//Update the currenty directory listing block
+	//Note that the first array entry is number of dirents
+	LogWrite("Updating current directory listing\n");
+
+	//Create . directory	
+	num_dirents += 1;
+	strcpy(block.dir_entries[num_dirents].entry_name, ".");
+	block.dir_entries[num_dirents].inode_num = ROOT_INODE_NUMBER;	
+
+	//Create .. directory
+	num_dirents++;
+	strcpy(block.dir_entries[num_dirents].entry_name, "..");
+	block.dir_entries[num_dirents].inode_num = ROOT_INODE_NUMBER;
+
+	//Set number of dirents to 2
+	block.dir_entries[0].inode_num = num_dirents;
+	disk_write(curr_dirent_block_num, &block);
+
+	return 1;
+}
+
 
 /*
 Read specified inode from disk
@@ -197,9 +323,9 @@ int syscall_delete_Inode( int inumber )
 	for(int i=0;i<POINTERS_PER_INODE;i++){
 		if(Inode.direct[i]!=-1){ //if a valid data block exists
 			//free the data block in the bitmap
-			printf("\ndata block %d before freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
+			//printf("\ndata block %d before freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
 			free_block_bitmap[Inode.direct[i]]=0;
-			printf("\ndata block %d after freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
+			//printf("\ndata block %d after freeing : %d",Inode.direct[i],free_block_bitmap[Inode.direct[i]]);
 			//free the data block in the inode
 			Inode.direct[i]=-1;
 		}

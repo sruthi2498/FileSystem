@@ -1,10 +1,10 @@
 #include "all_include.h"
-#include "disk.h"
-#include "write_to_log.h"
-#include "syscall.h"
-#include "initialise.h"
-#include "dir.h"
-#include "file.h"
+// #include "disk.h"
+// #include "write_to_log.h"
+// #include "syscall.h"
+// #include "initialise.h"
+// #include "dir.h"
+// #include "file.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -70,12 +70,22 @@ int calculate_offset_in_block(int inodenumber,int blocknum){
 }
 
 /*
+Set all datablocks to -1 in free_block_bitmap
+*/
+initialise_free_block_bitmap(){
+	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
+		free_block_bitmap[i] = 0;
+	}
+}
+
+/*
 Go through all inodes
 Caculate block number and offset for them
 add it to i-list
 */
 int initialise_empty_inodes(int reset){
 	for(int i=0;i<NUMBER_OF_INODES;i++){
+		i_list[i].isvalid = 0;
 		i_list[i].blocknum=calculate_block_for_inode(i);
 		i_list[i].offset_in_block=calculate_offset_in_block(i,i_list[i].blocknum);
 		if(reset){ //set all data blocks to -1
@@ -148,6 +158,47 @@ void inode_atttributes_given_inode(struct syscall_inode Inode){
 	printf("\n");
 }
 
+void initialise_homeDir(){
+
+	LogWrite("Creating home dir...\n");
+	printf("in initialise_homeDir\n");
+	//Create an inode
+	int curr_inode_num = syscall_create_Inode();
+	if(curr_inode_num < 0){
+		LogWrite("Home directory inode creation failed\n");
+	}
+	else{
+		printf("Home directory inode initialised\n");
+		LogWrite("Created node successfully for home directory\n");
+	}
+
+	//Initialise the file/dir data block with file information
+	//NOTE: 2 is to be replaced with S_ISDIR flag!!!!	
+	if(syscall_initialise_file_info(curr_inode_num, 2) < 0){
+		LogWrite("Initialising file info failed\n");
+		return -1;
+	}
+	else{
+		LogWrite("Stat file info initialised successfully\n");
+	}
+
+
+	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
+	printf("Calling create default dir\n");
+	if(syscall_create_default_dir(curr_inode_num) < 0){
+		LogWrite("Creating default directories . and .. failed\n");
+		return -1;
+	}
+	else{
+		LogWrite("Default directories created successfully\n");
+	}
+
+	LogWrite("Created home directory successfully\n");
+	//CURR_ROOT_INODE_NUM = curr_inode_num;
+	LogWrite("Current root inode updated\n");
+	return 1;
+}
+
 
 int main(){
 
@@ -181,8 +232,17 @@ int main(){
 	}
 	disk_attributes();
 	syscall_mount();
+	initialise_free_block_bitmap();
+	printf("initialising home directory ... \n");
+	initialise_homeDir();
+	file_open("/"); 	//should return 0
+	file_open(".");		//should return -1
+	file_open("/.");     //should return 0
+	file_open("nope"); 	 //should return -1
+	file_open("/oui");    //should return -1
 
-	syscall_delete(134);
+	//syscall_create_Inode();
+	//syscall_delete_Inode(134);
 	
 	// inode_atttributes_given_inodenumber(676);
 	// //syscall_inode_atttributes(146);
