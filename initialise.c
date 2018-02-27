@@ -172,8 +172,9 @@ void initialise_homeDir(){
 		LogWrite("Created node successfully for home directory\n");
 	}
 
-	//Initialise the file/dir data block with file information	
-	if(syscall_initialise_file_info(curr_inode_num) < 0){
+	//Initialise the file/dir data block with file information
+	//NOTE: 2 is to be replaced with S_ISDIR flag!!!!	
+	if(syscall_initialise_file_info(curr_inode_num, 2) < 0){
 		LogWrite("Initialising file info failed\n");
 		return -1;
 	}
