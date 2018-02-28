@@ -1,83 +1,83 @@
-Wed Feb 28 07:16:45 2018: System Format
-Wed Feb 28 07:16:45 2018: Completed initialising disk
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Superblock initialised
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Completed Initialising empty inodes
-Wed Feb 28 07:16:45 2018: Printing disk attributes
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Disk is valid
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Free Block Bitmap created
-Wed Feb 28 07:16:45 2018: Creating home dir...
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Assigning datablocks to inode
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Created inode successfully
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Read Inode
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Read Inode
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Stat file info initialised successfully
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Read Inode
-Wed Feb 28 07:16:45 2018: Read current directory's data block number
-Wed Feb 28 07:16:45 2018: Reading from disk completed
-Wed Feb 28 07:16:45 2018: Updating current directory listing
-Wed Feb 28 07:16:45 2018: Writing to disk completed
-Wed Feb 28 07:16:45 2018: Default directories created successfully
-Wed Feb 28 07:16:45 2018: Created home directory successfully
-Wed Feb 28 07:16:45 2018: Current root inode updated
+Wed Feb 28 10:15:45 2018: System Format
+Wed Feb 28 10:15:45 2018: Completed initialising disk
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Superblock initialised
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Completed Initialising empty inodes
+Wed Feb 28 10:15:45 2018: Printing disk attributes
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Disk is valid
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Free Block Bitmap created
+Wed Feb 28 10:15:45 2018: Creating home dir...
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Assigning datablocks to inode
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Created inode successfully
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Read Inode
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Read Inode
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Stat file info initialised successfully
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Read Inode
+Wed Feb 28 10:15:45 2018: Read current directory's data block number
+Wed Feb 28 10:15:45 2018: Reading from disk completed
+Wed Feb 28 10:15:45 2018: Updating current directory listing
+Wed Feb 28 10:15:45 2018: Writing to disk completed
+Wed Feb 28 10:15:45 2018: Default directories created successfully
+Wed Feb 28 10:15:45 2018: Created home directory successfully
+Wed Feb 28 10:15:45 2018: Current root inode updated

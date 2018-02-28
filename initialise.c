@@ -244,6 +244,7 @@ int initialise_my_filesystem(){
 		LogWrite("Home dir init failed\n");
 		return 0;
 	}
+	
 	return 1;
 }
 
