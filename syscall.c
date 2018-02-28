@@ -119,9 +119,9 @@ Given inode number, assigns 4 datablocks to every inode as part of its datablock
 */
 int syscall_assign_datablocks(int inode_num){
 	LogWrite("Assigning datablocks to inode\n");
-	for(int x = 0; x<4 ;x++){
+	for(int x = 0; x<POINTERS_PER_INODE ;x++){
 		int free_datablock_num = syscall_find_free_datablock();
-		printf("free_datablock_num %d \t", free_datablock_num);
+		//printf("free_datablock_num %d \t", free_datablock_num);
 		if(free_datablock_num != -1){
 			free_block_bitmap[free_datablock_num] = 1;
 			i_list[inode_num].direct[x] = free_datablock_num;
@@ -130,8 +130,19 @@ int syscall_assign_datablocks(int inode_num){
 			return -1;
 		}
 	}
-	printf("\n");
+	write_i_list_to_disk();
+	syscall_display_datablock_for_inode(inode_num);
+	//printf("\n");
 	return 1;
+}
+
+void syscall_display_datablock_for_inode(int inodenum){
+
+	struct syscall_inode Inode=ReadInode(inodenum);
+	printf("\nINODE %d\npointer\tdatablock",inodenum);
+	for(int i=0;i<POINTERS_PER_INODE;i++){
+		printf("\n  %d\t%d",i,Inode.direct[i]);
+	}
 }
 
 
@@ -162,11 +173,12 @@ int syscall_create_Inode()
 			int block_offset = calculate_offset_in_block(i,blocknumber);
 
 			//Read block with inode from disk 
-			printf("Reading block %d ... \n", blocknumber);
+			//printf("Reading block %d ... \n", blocknumber);
 			disk_read(blocknumber, block.data);
 
 			//Update inode information			
 			i_list[i].blocknum = blocknumber;
+
 
 			//assign 4 datablocks (to be filled by file_create/dir_create functions)
 			int x = syscall_assign_datablocks(i);
@@ -185,7 +197,7 @@ int syscall_create_Inode()
 
 
 			//Log creation
-			printf("Created inode %d in block %d\n", i, i_list[i].blocknum);
+			//printf("Created inode %d in block %d\n", i, i_list[i].blocknum);
 			LogWrite("Created inode successfully\n");
 
 			return i;
@@ -236,8 +248,7 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 	//stat_buf.st_blksize ;
 	block.stat_info.st_blocks = 4;
 
-	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
-		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
+	syscall_display_stat(inode_num);
 	disk_write(stat_block_num, &block);
 
 	
@@ -246,6 +257,33 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 
 }
 
+
+void syscall_display_stat(int inodenum){
+	//Read the block containing the inode information
+	struct syscall_inode Inode = ReadInode(inodenum);
+	int stat_block_num = Inode.direct[0];
+
+	//Read the stat block from inode
+	union syscall_block block;
+	disk_read(stat_block_num, &block);
+
+	//Stat file information structure
+	printf("\nStat for inode %d",inodenum);
+	printf("\n\tst_mode   : %d",block.stat_info.st_mode);
+	printf("\n\tst_ino    : %d",block.stat_info.st_ino);
+	printf("\n\tst_dev    : %d",block.stat_info.st_dev);
+	printf("\n\tst_rdev   : %d",block.stat_info.st_rdev);
+	printf("\n\tst_nlink  : %d",block.stat_info.st_nlink);
+	printf("\n\tst_uid    : %d",block.stat_info.st_uid);
+	printf("\n\tst_gid    : %d",block.stat_info.st_gid);
+	printf("\n\tst_size   : %d",block.stat_info.st_size);
+	printf("\n\tst_blksize: %d",block.stat_info.st_blksize);
+	printf("\n\tst_blocks : %d",block.stat_info.st_blocks);
+	printf("\n\tst_atim   : %lld.%.9ld", (long long)block.stat_info.st_atim.tv_sec, block.stat_info.st_atim.tv_nsec);
+	printf("\n\tst_st_mtim: %lld.%.9ld", (long long)block.stat_info.st_mtim.tv_sec, block.stat_info.st_mtim.tv_nsec);
+	printf("\n\tst_ctim   : %lld.%.9ld", (long long)block.stat_info.st_ctim.tv_sec, block.stat_info.st_ctim.tv_nsec);
+	printf("\n");
+}
 
 
 int syscall_create_default_dir(int inode_num){
@@ -318,6 +356,19 @@ int syscall_assign_filetable(){
 	return -1;
 }
 
+
+void write_i_list_to_disk(){
+	union syscall_block block;
+	int k=0; //for every actual inode
+	for(int i=1;i<=NUMBER_OF_INODE_BLOCKS;i++){ //for every inode block
+		for(int j=0;j<INODES_PER_BLOCK;j++){//for every inode in the block
+			block.inode[j]=i_list[k];
+			k++;
+		}
+		disk_write(i,block.data);
+		
+	}
+}
 /*
 Read specified inode from disk
 */
