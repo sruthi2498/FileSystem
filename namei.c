@@ -16,13 +16,23 @@
 /*The current directory is stored in the process u area, and the system
 root mode is stored in a global variable.*/
 
-int namei(char *path){
+struct valid_inode_path namei(char *path){
 	LogWrite("looking up path ...\n");
+
+	struct valid_inode_path path_info;
 
 	//Check for validity of path
 	if((path[0] == NULL) || (path[0] != '/')){
 		LogWrite("Invalid pathname\n");
-		return -1;
+		path_info.found = -1;
+		strcpy(path_info.not_found_entry, path);
+		strcpy(path_info.file_entry, "");
+		path_info.valid_inode = -1;
+		return path_info;
+	}
+	else{
+		strcpy(path_info.file_entry, "/");
+		path_info.valid_inode = ROOT_INODE_NUMBER;
 	}
 
 	//Initialize useful variables
@@ -30,35 +40,54 @@ int namei(char *path){
 	int dir_inode_num;
 	struct syscall_inode curr_dir;
 	int next_inode = ROOT_INODE_NUMBER;
+	char* buffer[20];
+
 
 	//Read each pathname component into a buffer
 	if(path[1]){
 	int i = 1;
-		while((path[i] != NULL) && (i<=pathlength) ){
+		while((path[i] != NULL) && (i<=pathlength) && (next_inode >= 0)){
 
 			//Initialize current directory (always root)
 			dir_inode_num = next_inode;
 			curr_dir = ReadInode(dir_inode_num);
 
 			//Read componenent into buffer (max size for filename is 20)
-			char* buffer[20];
 			int read_char = read_component(path, &buffer, i);
 			//printf("buffer %s ", buffer);
 			i += read_char;
 			if(read_char < 0){
 				LogWrite("Could not resolve name\n");
-				return -1;
+				strcpy(path_info.not_found_entry, buffer);
+				path_info.found = -1;
+				return path_info;
 			}
-			
+
 
 			//Read entries from dir datablock in curr_dir inode (either through dirent structure helper function or stringReads)
 			next_inode = dir_entry_exists(curr_dir, buffer);
 
-			//If next_inode is not -1, i.e found, update dir_inode_num
-
+			//If next_inode is found, update vaid file_entry and inode
+			if(next_inode >= 0){
+				strcpy(path_info.file_entry, buffer);
+				path_info.valid_inode = next_inode;
+			}
+		}
+		//If path was found, update the not_found_entry to empty string (everything matched) and found to 1
+		if(next_inode >= 0){
+			strcpy(path_info.not_found_entry, "");
+			path_info.found = 1;
+		}
+		else{
+			strcpy(path_info.not_found_entry, buffer);
+			path_info.found = -1;
 		}
 	}
-	return next_inode;
+	else{
+		path_info.found = 1;
+		strcpy(path_info.not_found_entry, "");
+	}
+	return path_info;
 	//return next_inode
 
 }

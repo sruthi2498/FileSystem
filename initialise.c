@@ -177,7 +177,7 @@ int initialise_homeDir(){
 
 	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
 	printf("Calling create default dir\n");
-	if(syscall_create_default_dir(curr_inode_num) < 0){
+	if(syscall_create_default_dir(curr_inode_num, curr_inode_num) < 0){
 		LogWrite("Creating default directories . and .. failed\n");
 		return -1;
 	}
@@ -230,12 +230,12 @@ int initialise_my_filesystem(){
 		return 0;
 	}
 	initialise_free_block_bitmap();
+  
 	int homedirret=initialise_homeDir();
 	if(homedirret!=1){
 		LogWrite("Home dir init failed\n");
 		return 0;
-	}
-	
+	}	
 	return 1;
 }
 

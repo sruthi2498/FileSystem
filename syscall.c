@@ -224,6 +224,9 @@ int syscall_find_free_datablock(){
 
 }
 
+/*
+	Initialises stat file info like ctim,inode num, hardlink count in block 0
+*/
 int syscall_initialise_file_info(int inode_num, int file_type){
 
 	//Read the block containing the inode information
@@ -236,9 +239,8 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 
 	//Set inodeNumber, number of hard links, inode status change time na number of blocks it occupies
 	//struct fs_stat stat_buf;
-	//stat_buf.st_mode = S_ISDIR;
+	block.stat_info.st_mode = file_type;
 	block.stat_info.st_ino = inode_num;
-	block.stat_info.st_nlink = 2;
 	//stat_buf.st_uid ;
 	//stat_buf.st_gid ;
 	//stat_buf.st_size ;
@@ -248,16 +250,24 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 	//stat_buf.st_blksize ;
 	block.stat_info.st_blocks = 4;
 
+	if(file_type == S_IFDIR){
+		block.stat_info.st_nlink = 2;
+	}
+	else{
+		block.stat_info.st_nlink = 1;
+	}
+
+	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
+		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
 	syscall_display_stat(inode_num);
 	disk_write(stat_block_num, &block);
-
 	
 	//LogWrite("Initialized stat file info\n");
 	return 1;
 
 }
 
-
+  
 void syscall_display_stat(int inodenum){
 	//Read the block containing the inode information
 	struct syscall_inode Inode = ReadInode(inodenum);
@@ -286,13 +296,16 @@ void syscall_display_stat(int inodenum){
 }
 
 
+/*
+	Creates the default directories . and .. 
+*/
 int syscall_create_default_dir(int inode_num){
-
+  
 	//Keeps track of number of directory entries
 	int num_dirents = 0;
 
 	//Read the block containing the inode information
-	struct syscall_inode Inode = ReadInode(inode_num);
+	struct syscall_inode Inode = ReadInode(new_inode);
 	int curr_dirent_block_num = Inode.direct[1];
 	//printf("current dirent block num %d\n", curr_dirent_block_num);
 	LogWrite("Read current directory's data block number\n");
@@ -308,12 +321,12 @@ int syscall_create_default_dir(int inode_num){
 	//Create . directory	
 	num_dirents += 1;
 	strcpy(block.dir_entries[num_dirents].entry_name, ".");
-	block.dir_entries[num_dirents].inode_num = ROOT_INODE_NUMBER;	
+	block.dir_entries[num_dirents].inode_num = new_inode;	
 
 	//Create .. directory
 	num_dirents++;
 	strcpy(block.dir_entries[num_dirents].entry_name, "..");
-	block.dir_entries[num_dirents].inode_num = ROOT_INODE_NUMBER;
+	block.dir_entries[num_dirents].inode_num = parent_inode;
 
 	//Set number of dirents to 2
 	block.dir_entries[0].inode_num = num_dirents;
@@ -440,7 +453,6 @@ int syscall_delete_Inode( int inumber )
 	return 1;
 }
 
-
 /*
 syscall_getsize
  	-Return the logical size of the given inode, in bytes
@@ -476,7 +488,42 @@ int syscall_find_next_free_file_descriptor(){
 }
 
 /*
- syscall_find_fd_for_inodenum
+	Adds a file entry to the parent inode (called when new file/dir is created)
+*/
+int syscall_add_entry_dir(int parent_inode, char *file_entry, int entry_inode){
+
+	//Keeps track of number of directory entries
+	int num_dirents;
+
+	//Read the block containing the inode information
+	struct syscall_inode Inode = ReadInode(parent_inode);
+	int curr_dirent_block_num = Inode.direct[1];
+	LogWrite("Read current directory's data block number\n");
+
+	//Read directory entries datablock
+	union syscall_block block;
+	disk_read(curr_dirent_block_num, &block);
+
+	//Update the currenty directory listing block
+	//Note that the first array entry is number of dirents
+	LogWrite("Updating current directory listing\n");
+	num_dirents = block.dir_entries[0].inode_num;
+
+	//Add directory	
+	num_dirents++;
+	strcpy(block.dir_entries[num_dirents].entry_name, file_entry);
+	block.dir_entries[num_dirents].inode_num = entry_inode;	
+
+
+	//Set number of dirents to 2
+	block.dir_entries[0].inode_num = num_dirents;
+	disk_write(curr_dirent_block_num, &block);
+
+	return 1;
+}
+
+/*
+syscall_find_fd_for_inodenum
  	-return fd for inodenum
 */
 int syscall_find_fd_for_inodenum(int inodenumber){

@@ -69,11 +69,13 @@ static struct fuse_operations fs_oper = {
 };
 
 int main(int argc, char *argv[]){
+
 	int filesysteminitret=initialise_my_filesystem();
 	if(filesysteminitret==0){
 		LogWrite("File system could not be initialised\n");
 	}
 
 	file_open("abc.txt");
+  
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }

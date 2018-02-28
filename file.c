@@ -14,12 +14,17 @@
 
 int file_open(char * pathname){
 	
-	printf("in file_open\n");
+	printf("in file_open %s\n", pathname);
 	//Find node from pathname
 		//Check if file does not exist
-		int path_inode = namei(pathname);
-		printf("Inode of path name %s is  %d\n", pathname, path_inode);
-
+		struct valid_inode_path path_inode;
+		path_inode = namei(pathname);
+		if(path_inode.found > 0){
+			printf("Inode of path name %s is  %d\n", pathname, path_inode.valid_inode);
+		}
+		else{
+			printf("%s not found!\n", path_inode.not_found_entry);
+		}
 		LogWrite("Path name resolved to inode number\n");
 	// allocate file table entry for node, initialize count, offset;
 	
