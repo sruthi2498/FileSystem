@@ -69,7 +69,7 @@ static struct fuse_operations fs_oper = {
 };
 
 int main(int argc, char *argv[]){
-	ResetLog();
+	ResetLogFile();
 	//create_fs();
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }

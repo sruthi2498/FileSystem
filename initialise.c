@@ -186,7 +186,7 @@ void initialise_homeDir(){
 
 	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
 	printf("Calling create default dir\n");
-	if(syscall_create_default_dir(curr_inode_num) < 0){
+	if(syscall_create_default_dir(curr_inode_num, curr_inode_num) < 0){
 		LogWrite("Creating default directories . and .. failed\n");
 		return -1;
 	}
@@ -235,11 +235,20 @@ int main(){
 	syscall_mount();
 	initialise_free_block_bitmap();
 	initialise_homeDir();
+
+	//Test namei with fileopen
 	file_open("/"); 	//should return 0
 	file_open(".");		//should return -1
 	file_open("/.");     //should return 0
 	file_open("nope"); 	 //should return -1
 	file_open("/oui");    //should return -1
+
+	//Test mkdir
+	printf("Calling mkdir \n");
+	dir_mkdir("/");
+	dir_mkdir("/ruthere");
+
+	file_open("/ruthere");
 
 	//syscall_create_Inode();
 	//syscall_delete_Inode(134);

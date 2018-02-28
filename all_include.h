@@ -16,8 +16,8 @@
 
 #include "write_to_log.h"
 #include "disk.h"
-//#include "namei.h"
 #include "syscall.h"
+#include "namei.h"
 #include "dir.h"
 #include "file.h"
 #include "initialise.h"
@@ -124,6 +124,13 @@ struct file_desc{
 struct open_file_table{
 	struct file_desc fd_entry[MAX_FD];
 	int count_used_file_descriptors;
+};
+
+struct valid_inode_path{
+	int found;	//-1 if not found
+	char not_found_entry[20];
+	char file_entry[20];	//name of last valid file
+	int valid_inode;		//inode of last valid file
 };
 
 //list of free file descriptors
