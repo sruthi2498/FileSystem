@@ -118,7 +118,6 @@ int syscall_mount()
 Given inode number, assigns 4 datablocks to every inode as part of its datablocks
 */
 int syscall_assign_datablocks(int inode_num){
-	LogWrite("Assigning datablocks to inode\n");
 	for(int x = 0; x<4 ;x++){
 		int free_datablock_num = syscall_find_free_datablock();
 		printf("free_datablock_num %d \t", free_datablock_num);
@@ -185,7 +184,7 @@ int syscall_create_Inode()
 
 
 			//Log creation
-			printf("Created inode %d in block %d\n", i, i_list[i].blocknum);
+			printf("Created inode %d in block %d at time \n", i, i_list[i].blocknum);
 			LogWrite("Created inode successfully\n");
 
 			return i;
@@ -205,13 +204,21 @@ int syscall_find_free_datablock(){
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
 		if(free_block_bitmap[i] == 0){
 			free_block_bitmap[i] = -1;
+			LogWrite("Found free data block\n");
 			return i;
 		}
 	}
+	LogWrite("No free data block\n");
 	return -1;
 
 }
 
+<<<<<<< HEAD
+/*
+syscall_initial_filetable()
+	-initialise all inode_numbers to -1.
+*/
+=======
 int syscall_initialise_file_info(int inode_num, int file_type){
 
 	//Read the block containing the inode information
@@ -285,9 +292,11 @@ int syscall_create_default_dir(int inode_num){
 }
 
 
+>>>>>>> b5c1aae94ec9406c09fd96960e54ee17866adf00
 int syscall_initial_filetable(){
 	int i;
-	//initialise all inode_numbers to -1.
+	LogWrite("Initialising file table (all inode entries -1)\n");
+	Open_file_table.count_used_file_descriptors=0;
 	for(i=0;i<20;i++)
 	{
 		file_table_entries[i].inode_num=-1;

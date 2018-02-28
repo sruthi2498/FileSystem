@@ -27,15 +27,6 @@ int dir_mkdir(char * name){
 	//Check if directory exists
 
 
-	a=file_open("a.txt");
-	a.file_read("a.txt",buffer);
-	while(buffer!=EOF)
-	{
-		if(strcmp(buffer,name)==0)
-			printf("Directory already exists");
-	}
-	syscall_create_Inode();
-
 }
 
 /*
