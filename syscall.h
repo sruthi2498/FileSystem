@@ -27,4 +27,10 @@ int syscall_assign_filetable();
 
 int syscall_find_fd_for_inodenum(int inode_num);
 
+
+void syscall_display_stat(int inodenum);
+void syscall_display_datablock_for_inode(int inodenum);
+
+void write_i_list_to_disk();
+
 #endif

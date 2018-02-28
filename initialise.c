@@ -98,16 +98,7 @@ int initialise_empty_inodes(int reset){
 
 
 	}
-	union syscall_block block;
-	int k=0; //for every actual inode
-	for(int i=1;i<=NUMBER_OF_INODE_BLOCKS;i++){ //for every inode block
-		for(int j=0;j<INODES_PER_BLOCK;j++){//for every inode in the block
-			block.inode[j]=i_list[k];
-			k++;
-		}
-		disk_write(i,block.data);
-		
-	}
+	write_i_list_to_disk();
 	LogWrite("Completed Initialising empty inodes\n");
 	return 1;
 }
