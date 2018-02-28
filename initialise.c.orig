@@ -168,11 +168,32 @@ int initialise_homeDir(){
 		LogWrite("Home directory inode creation failed\n");
 		return 0;
 	}
-	//Read the block containing the inode information
+	else{
+		printf("Home directory inode initialised\n");
+		LogWrite("Created node successfully for home directory\n");
+	}
+//Read the block containing the inode information
 	struct syscall_inode curr_inode = ReadInode(curr_inode_num);
 
+<<<<<<< HEAD
+	//Initialise the file/dir data block with file information	
+	struct fs_stat stat_buf;
+	stat_buf.st_mode = S_IFDIR;
+	stat_buf.st_ino = curr_inode_num;
+	stat_buf.st_nlink = 2;
+	//stat_buf.st_uid ;
+	//stat_buf.st_gid ;
+	//stat_buf.st_size ;
+	//stat_buf.st_atim ;
+	//stat_buf.st_mtim ;
+	clock_gettime(CLOCK_REALTIME, &stat_buf.st_ctim);
+	//stat_buf.st_blksize ;
+	stat_buf.st_blocks = 2;
+
+	disk_write(curr_inode.direct[0], &stat_buf);
+=======
 	//Initialise the file/dir data block with file information
-	//NOTE: 2 is to be replaced with S_IFDIR flag!!!!	
+	//NOTE: 2 is to be replaced with S_ISDIR flag!!!!	
 	if(syscall_initialise_file_info(curr_inode_num, 2) < 0){
 		LogWrite("Initialising file info failed\n");
 		return -1;
@@ -181,8 +202,7 @@ int initialise_homeDir(){
 		LogWrite("Stat file info initialised successfully\n");
 	}
 
-
-	//disk_write(curr_inode.direct[0], &stat_buf);
+>>>>>>> b5c1aae94ec9406c09fd96960e54ee17866adf00
 
 	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
 	printf("Calling create default dir\n");
@@ -239,11 +259,43 @@ int initialise_my_filesystem(){
 		return 0;
 	}
 	initialise_free_block_bitmap();
+<<<<<<< HEAD
 	int homedirret=initialise_homeDir();
 	if(homedirret!=1){
 		LogWrite("Home dir init failed\n");
 		return 0;
 	}
+=======
+	initialise_homeDir();
+	file_open("/"); 	//should return 0
+	file_open(".");		//should return -1
+	file_open("/.");     //should return 0
+	file_open("nope"); 	 //should return -1
+	file_open("/oui");    //should return -1
+
+	//syscall_create_Inode();
+	//syscall_delete_Inode(134);
+	
+	// inode_atttributes_given_inodenumber(676);
+	// //syscall_inode_atttributes(146);
+	// //disk_write(0,"aaa");
+	// // char * temp=(char *)malloc(sizeof(char)*DISK_BLOCK_SIZE);
+	// // char * str=(char *)malloc(sizeof(char)*5);
+	// // strcpy(str,"aaaa");
+	// // disk_write(34, str);
+
+	// // disk_read(34,temp);
+	// // printf("\nread %s\n",temp);
+	// // free(temp);
+	// // union syscall_block block;
+	// // disk_read(1,&block.inode[0]);
+	// // printf("\nblock %d offfset %d\n",block.inode[0].blocknum,block.inode[0].offset_in_block);
+	// // disk_read(1,&block.inode[1]);
+	// // printf("\nblock %d offfset %d\n",block.inode[0].blocknum,block.inode[0].offset_in_block);
+
+	// disk_close();
+	
+>>>>>>> b5c1aae94ec9406c09fd96960e54ee17866adf00
 	return 1;
 }
 

@@ -24,6 +24,7 @@ dir_mkdir
 	- Add to parent inode and write it
 */
 int dir_mkdir(char * name){
+	//Check if directory exists
 
 
 }

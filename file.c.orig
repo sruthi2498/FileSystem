@@ -20,14 +20,14 @@ int file_open(char * pathname){
 		int path_inode = namei(pathname);
 		printf("Inode of path name %s is  %d\n", pathname, path_inode);
 
+<<<<<<< HEAD
+	//get fd
+	//get file table entry
+=======
 		LogWrite("Path name resolved to inode number\n");
 	// allocate file table entry for node, initialize count, offset;
+>>>>>>> b5c1aae94ec9406c09fd96960e54ee17866adf00
 	
-	// allocate file descriptor entry, set pointer to file table entry;
-	
-	// if (type of open specifies truncate file)
-		//free all file blocks (algorithm free);
-
 	//return (file descriptor);
 }
 
