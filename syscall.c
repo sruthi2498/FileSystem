@@ -299,7 +299,7 @@ void syscall_display_stat(int inodenum){
 /*
 	Creates the default directories . and .. 
 */
-int syscall_create_default_dir(int inode_num){
+int syscall_create_default_dir(int parent_inode, int new_inode){
   
 	//Keeps track of number of directory entries
 	int num_dirents = 0;
