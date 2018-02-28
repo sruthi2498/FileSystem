@@ -54,9 +54,7 @@ int dir_mkdir(char * name){
 	/*
 	else{
 		syscall_create_Inode();
-
 	}*/
-
 }
 
 /*

@@ -22,5 +22,17 @@ int syscall_create_default_dir(int parent_inode, int new_inode);
 
 int syscall_add_entry_dir(int parent_inode, char *file_entry, int entry_inode);
 
+
 int syscall_find_next_free_file_descriptor();
+int syscall_initial_filetable();
+int syscall_assign_filetable();
+
+int syscall_find_fd_for_inodenum(int inode_num);
+
+
+void syscall_display_stat(int inodenum);
+void syscall_display_datablock_for_inode(int inodenum);
+
+void write_i_list_to_disk();
+
 #endif

@@ -47,7 +47,7 @@ static int fs_read(const char *path, char *buf, size_t size, off_t offset,
 
 static int fs_mkdir(const char *path, mode_t mode)
 {
-	
+	printf("called mkdir");
 }
 
 static int fs_rmdir(const char *path) {
@@ -69,7 +69,13 @@ static struct fuse_operations fs_oper = {
 };
 
 int main(int argc, char *argv[]){
-	ResetLogFile();
-	//create_fs();
+
+	int filesysteminitret=initialise_my_filesystem();
+	if(filesysteminitret==0){
+		LogWrite("File system could not be initialised\n");
+	}
+
+	file_open("abc.txt");
+  
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }

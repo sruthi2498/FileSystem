@@ -72,10 +72,11 @@ int calculate_offset_in_block(int inodenumber,int blocknum){
 /*
 Set all datablocks to -1 in free_block_bitmap
 */
-initialise_free_block_bitmap(){
+void initialise_free_block_bitmap(){
 	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
 		free_block_bitmap[i] = 0;
 	}
+
 }
 
 /*
@@ -97,16 +98,7 @@ int initialise_empty_inodes(int reset){
 
 
 	}
-	union syscall_block block;
-	int k=0; //for every actual inode
-	for(int i=1;i<=NUMBER_OF_INODE_BLOCKS;i++){ //for every inode block
-		for(int j=0;j<INODES_PER_BLOCK;j++){//for every inode in the block
-			block.inode[j]=i_list[k];
-			k++;
-		}
-		disk_write(i,block.data);
-		
-	}
+	write_i_list_to_disk();
 	LogWrite("Completed Initialising empty inodes\n");
 	return 1;
 }
@@ -158,23 +150,20 @@ void inode_atttributes_given_inode(struct syscall_inode Inode){
 	printf("\n");
 }
 
-void initialise_homeDir(){
+int initialise_homeDir(){
 
 	LogWrite("Creating home dir...\n");
 	//Create an inode
 	int curr_inode_num = syscall_create_Inode();
 	if(curr_inode_num < 0){
 		LogWrite("Home directory inode creation failed\n");
+		return 0;
 	}
-	else{
-		printf("Home directory inode initialised\n");
-		LogWrite("Created node successfully for home directory\n");
-	}
-//Read the block containing the inode information
+	//Read the block containing the inode information
 	struct syscall_inode curr_inode = ReadInode(curr_inode_num);
 
 	//Initialise the file/dir data block with file information
-	//NOTE: 2 is to be replaced with S_ISDIR flag!!!!	
+	//NOTE: 2 is to be replaced with S_IFDIR flag!!!!	
 	if(syscall_initialise_file_info(curr_inode_num, 2) < 0){
 		LogWrite("Initialising file info failed\n");
 		return -1;
@@ -183,6 +172,8 @@ void initialise_homeDir(){
 		LogWrite("Stat file info initialised successfully\n");
 	}
 
+
+	//disk_write(curr_inode.direct[0], &stat_buf);
 
 	//Initialise the directory datablock with directory entries (. , .. by default - both have the same inode number in home directory)
 	printf("Calling create default dir\n");
@@ -201,7 +192,7 @@ void initialise_homeDir(){
 }
 
 
-int main(){
+int initialise_my_filesystem(){
 
 	int choice;
 	int trial=1;
@@ -229,48 +220,22 @@ int main(){
 		int formatret=syscall_format(0);
 		if(formatret!=1){
 			LogWrite("Syscall Format failed");
+			return 0;
 		}
 	}
 	disk_attributes();
-	syscall_mount();
+	int mountret=syscall_mount();
+	if(mountret!=1){
+		LogWrite("Syscall Mount failed");
+		return 0;
+	}
 	initialise_free_block_bitmap();
-	initialise_homeDir();
-
-	//Test namei with fileopen
-	file_open("/"); 	//should return 0
-	file_open(".");		//should return -1
-	file_open("/.");     //should return 0
-	file_open("nope"); 	 //should return -1
-	file_open("/oui");    //should return -1
-
-	//Test mkdir
-	printf("Calling mkdir \n");
-	dir_mkdir("/");
-	dir_mkdir("/ruthere");
-
-	file_open("/ruthere");
-
-	//syscall_create_Inode();
-	//syscall_delete_Inode(134);
-	
-	// inode_atttributes_given_inodenumber(676);
-	// //syscall_inode_atttributes(146);
-	// //disk_write(0,"aaa");
-	// // char * temp=(char *)malloc(sizeof(char)*DISK_BLOCK_SIZE);
-	// // char * str=(char *)malloc(sizeof(char)*5);
-	// // strcpy(str,"aaaa");
-	// // disk_write(34, str);
-
-	// // disk_read(34,temp);
-	// // printf("\nread %s\n",temp);
-	// // free(temp);
-	// // union syscall_block block;
-	// // disk_read(1,&block.inode[0]);
-	// // printf("\nblock %d offfset %d\n",block.inode[0].blocknum,block.inode[0].offset_in_block);
-	// // disk_read(1,&block.inode[1]);
-	// // printf("\nblock %d offfset %d\n",block.inode[0].blocknum,block.inode[0].offset_in_block);
-
-	// disk_close();
-	
+  
+	int homedirret=initialise_homeDir();
+	if(homedirret!=1){
+		LogWrite("Home dir init failed\n");
+		return 0;
+	}	
 	return 1;
 }
+

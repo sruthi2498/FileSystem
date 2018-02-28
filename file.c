@@ -34,5 +34,7 @@ int file_open(char * pathname){
 		//free all file blocks (algorithm free);
 
 	//return (file descriptor);
+
+	return 1;
 }
 
