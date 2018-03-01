@@ -68,5 +68,21 @@ dir_rmdir
 */
 int dir_rmdir(char * name){
 
+	struct valid_inode_path dir_info;
+	dir_info = 	namei(name);
+
+	if(dir_info.found < 0){
+		printf("Directory %s does not exist \n", name);
+		LogWrite("Directory does not exist\n");
+		return -1;
+	}
+
+	int inodenum;
+	inodenum = dir_info.valid_inode;
+
+	syscall_delete_Inode(inodenum);
+	return 0;
+
+
 
 }
