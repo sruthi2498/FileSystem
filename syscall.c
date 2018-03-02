@@ -145,6 +145,17 @@ void syscall_display_datablock_for_inode(int inodenum){
 	}
 }
 
+void syscall_free_datablock_for_inode(int inodenum){
+
+	struct syscall_inode Inode=ReadInode(inodenum);
+	printf("\nINODE %d\npointer\tdatablock",inodenum);
+	for(int i=1;i<POINTERS_PER_INODE;i++){
+		Inode.direct[i]=-1;
+	}
+	i_list[inodenum]=Inode;
+	write_i_list_to_disk();
+
+}
 
 /*
 syscall_create 
@@ -204,7 +215,7 @@ int syscall_create_Inode()
 		}
 	}
 	LogWrite("No free inodes! Out of space \n");
-	return 0;
+	return -1;
 }
 
 
@@ -351,15 +362,15 @@ syscall_assign_filetable()
 	-check the first available filetable entry	
 	-assign it and declare it's inode number
 */
-int syscall_assign_filetable(){
+int syscall_assign_filetable(int inodenum){
 	int i;
 	//check the first available filetable entry 
-	for(i=0;i<20;i++)
+	for(i=0;i<MAX_FD;i++)
 	{
 		if((file_table_entries[i].inode_num)==-1)
 			//assign it and declare it's inode number
 		{
-			file_table_entries[i].inode_num=syscall_create_Inode();
+			file_table_entries[i].inode_num=inodenum;
 			//return the index for file open table
 			LogWrite("Found file table entry\n");
 			return i;
@@ -479,6 +490,7 @@ int syscall_find_next_free_file_descriptor(){
 	for(int i=0;i<MAX_FD;i++){
 		if(free_file_desc[i]==0){
 			LogWrite("Found free file descriptor\n");
+			free_file_desc[i]=-1;
 			Open_file_table.count_used_file_descriptors++;
 			return i;
 		}
@@ -524,6 +536,7 @@ int syscall_add_entry_dir(int parent_inode, char *file_entry, int entry_inode){
 
 /*
 syscall_find_fd_for_inodenum
+	-FOR OPEN FILES
  	-return fd for inodenum
 */
 int syscall_find_fd_for_inodenum(int inodenumber){

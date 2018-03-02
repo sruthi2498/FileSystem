@@ -106,10 +106,8 @@ union syscall_block {
 //Contains file information like file status flags, current file offset, vnode pointer
 struct file_table_entry{
 	//file status flags
-
 	//current file offset
-	//int file_offset;
-
+	int file_offset;
 	//inode num
 	int inode_num;
 }file_table_entries [MAX_FD];
@@ -142,3 +140,8 @@ struct syscall_inode i_list[NUMBER_OF_INODES];
 
 //Free block bitmap
 int free_block_bitmap[NUMBER_OF_BLOCKS];
+
+
+/*
+
+*/
