@@ -91,3 +91,31 @@ int file_close(int fd){
 ssize_t file_read(int fd, void *buf, size_t nbyte, off_t offset){
 
 }
+
+
+size_t file_write(int fd, void *buf, off_t offset){
+
+	//get file table entry from fd
+
+	//Check file flags
+
+	//Set byte_count
+
+	//Get mode from filetable
+
+	//Set byte offset from file table offset
+
+	//Call bmap to find block and block offset corresponding to this offset
+
+	int i = 0;
+	//Writing to offset while more data is left
+
+		//Read the block
+
+		//Write from calculated offset till end of block
+
+		// write the buffer block to disk
+
+	return byte_count;
+
+}
