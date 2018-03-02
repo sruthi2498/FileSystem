@@ -51,7 +51,7 @@ static int fs_mkdir(const char *path, mode_t mode)
 }
 
 static int fs_rmdir(const char *path) {
-   
+
 }
 
 static int utime(const char * path, struct utimbuf * timebuf){
@@ -74,7 +74,16 @@ int main(int argc, char *argv[]){
 	if(filesysteminitret==0){
 		LogWrite("File system could not be initialised\n");
 	}
+	dir_mkdir("/ruthere");
+	dir_mkdir("/ruthere/yup");
 
+	printf("\n\n\n");
+	struct valid_inode_path x = namei("/ruthere");
+	printf("\n  Valid _ inode %d \n", x.valid_inode);
+	x = namei("/ruthere/yup");
+	printf("\n Valid _ inode %d \n", x.valid_inode);
+
+	//dir_rmdir("/ruthere");
 	file_open("abc.txt");
   
 	return fuse_main(argc, argv, &fs_oper, NULL);
