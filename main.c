@@ -75,7 +75,7 @@ int main(int argc, char *argv[]){
 		LogWrite("File system could not be initialised\n");
 	}
 
-	file_open("abc.txt");
+	//file_open("abc.txt");
   
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }
