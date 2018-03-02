@@ -63,7 +63,7 @@ return 0;
 }
 
 static int fs_rmdir(const char *path) {
-   
+
 }
 
 static int utime(const char * path, struct utimbuf * timebuf){
@@ -86,6 +86,7 @@ int main(int argc, char *argv[]){
 	if(filesysteminitret==0){
 		LogWrite("File system could not be initialised\n");
 	}
+
 	LogWrite("Going to return fuse_main\n");
 	//file_open("abc.txt");
 	return fuse_main(argc, argv, &fs_oper, NULL);
