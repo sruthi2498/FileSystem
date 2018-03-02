@@ -45,6 +45,8 @@
 //POSIX MACROS
 //#define S_ISDIR 2
 
+#define DISK_STORE_PATH "/home/sruthi/fss"
+
 static FILE *diskfile;
 static int nblocks=0;
 static int nreads=0;
