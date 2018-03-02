@@ -28,7 +28,15 @@ static int fs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 
 static int fs_open(const char *path, struct fuse_file_info *fi)
 {
-	
+    
+    //printf("\naaaaa \n%d\n",fi->mode_t);
+    int ret_val = file_open(path, fi->flags);
+    if (ret_val<0) {
+    	fprintf(stderr,"%d\n",errno);
+    	return -errno;
+    }
+    fi->fh = ret_val;
+	return 0;
 }
 
 
@@ -47,7 +55,11 @@ static int fs_read(const char *path, char *buf, size_t size, off_t offset,
 
 static int fs_mkdir(const char *path, mode_t mode)
 {
-	printf("called mkdir");
+	LogWrite("called mkdir");
+	  if (dir_mkdir(path) == 0) {
+    	return -errno;
+    }
+return 0;
 }
 
 static int fs_rmdir(const char *path) {
@@ -59,13 +71,13 @@ static int utime(const char * path, struct utimbuf * timebuf){
 }
 
 static struct fuse_operations fs_oper = {
-	.getattr	= fs_getattr,
-	.readdir	= fs_readdir,
+	//.getattr	= fs_getattr,
+	//.readdir	= fs_readdir,
 	.open       = fs_open,
-	.read		= fs_read,
-	.write      = fs_write,
+	//.read		= fs_read,
+	//.write      = fs_write,
 	.mkdir      = fs_mkdir,
-	.rmdir      = fs_rmdir,
+	//.rmdir      = fs_rmdir,
 };
 
 int main(int argc, char *argv[]){
@@ -74,17 +86,8 @@ int main(int argc, char *argv[]){
 	if(filesysteminitret==0){
 		LogWrite("File system could not be initialised\n");
 	}
-	dir_mkdir("/ruthere");
-	dir_mkdir("/ruthere/yup");
 
-	printf("\n\n\n");
-	struct valid_inode_path x = namei("/ruthere");
-	printf("\n  Valid _ inode %d \n", x.valid_inode);
-	x = namei("/ruthere/yup");
-	printf("\n Valid _ inode %d \n", x.valid_inode);
-
-	//dir_rmdir("/ruthere");
-	file_open("abc.txt");
-  
+	LogWrite("Going to return fuse_main\n");
+	//file_open("abc.txt");
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }
