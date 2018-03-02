@@ -27,7 +27,7 @@ int syscall_format(int reset)
 	LogWrite("System Format\n");
 	
 	//initialise disk file
-	if(disk_init("memory_file.dat",NUMBER_OF_BLOCKS	)!=1){
+	if(disk_init("memory_file.dat",NUMBER_OF_BLOCKS)!=1){
 		LogWrite("Disk init failed");
 		return 0;
 	}

@@ -13,8 +13,9 @@
 #include <unistd.h>
 
 int file_open(char * pathname,int oflag){
-	
-	printf("in file_open %s\n", pathname);
+
+	LogWrite("file_open called\n");
+	printf(1,"in file_open %s\n", pathname);
 	//Find node from pathname
 		//Check if file does not exist
 		struct valid_inode_path path_inode;
@@ -84,5 +85,9 @@ int file_close(int fd){
 	file_table_entries[fd_pointer].inode_num=-1;
 
 	return 1;
+
+}
+
+ssize_t file_read(int fd, void *buf, size_t nbyte, off_t offset){
 
 }

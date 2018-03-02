@@ -232,10 +232,11 @@ int initialise_my_filesystem(){
 	initialise_free_block_bitmap();
   
 	int homedirret=initialise_homeDir();
-	if(homedirret!=1){
+	if(homedirret<0){
 		LogWrite("Home dir init failed\n");
-		return 0;
-	}	
+		return -1;
+	}
+	LogWrite("Init completed\n");	
 	return 1;
 }
 
