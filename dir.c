@@ -58,6 +58,8 @@ int dir_mkdir(char * name){
 	}*/
 }
 
+
+
 /*
 dir_rmdir
 	- Get its inode
