@@ -63,7 +63,7 @@ return 0;
 }
 
 static int fs_rmdir(const char *path) {
-   
+
 }
 
 static int utime(const char * path, struct utimbuf * timebuf){

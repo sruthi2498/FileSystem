@@ -18,6 +18,7 @@ root mode is stored in a global variable.*/
 
 struct valid_inode_path namei(char *path){
 	LogWrite("looking up path ...\n");
+	printf("looking up path ... %s\n", path);
 
 	struct valid_inode_path path_info;
 
