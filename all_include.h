@@ -87,7 +87,7 @@ struct syscall_superblock {
 
 struct syscall_inode {
 	int isvalid;
-	int size;
+	int size; //SIZE OF FILE -> excluding stat
 	int direct[POINTERS_PER_INODE];
 	int blocknum;
 	int offset_in_block;
@@ -107,6 +107,7 @@ union syscall_block {
 //FILE STRUCTURES
 //Contains file information like file status flags, current file offset, vnode pointer
 struct file_table_entry{
+	//int mode;
 	//file status flags
 	//current file offset
 	int file_offset;
