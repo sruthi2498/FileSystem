@@ -59,21 +59,21 @@ struct syscall_dirent{
 };
 
 //Stat file information structure
-struct syscall_stat {
-	int			st_mode;
-	int			st_ino;
-	int			st_dev;
-	int			st_rdev;
-	int			st_nlink;
-	int			st_uid;
-	int 		st_gid;
-	int			st_size;
-	struct timespec	st_atim;
-	struct timespec	st_mtim;
-	struct timespec st_ctim;
-	int 		st_blksize;
-	int 		st_blocks;
-};
+// struct stat{
+// 	int			st_mode;
+// 	int			st_ino;
+// 	int			st_dev;
+// 	int			st_rdev;
+// 	int			st_nlink;
+// 	int			st_uid;
+// 	int 		st_gid;
+// 	int			st_size;
+// 	struct timespec	st_atim;
+// 	struct timespec	st_mtim;
+// 	struct timespec st_ctim;
+// 	int 		st_blksize;
+// 	int 		st_blocks;
+// };
 
 
 
@@ -99,7 +99,7 @@ union syscall_block {
 	int pointers[POINTERS_PER_BLOCK];
 	char data[DISK_BLOCK_SIZE];
 	struct syscall_dirent dir_entries[MAX_DIR_ENTRIES];
-	struct syscall_stat stat_info;
+	struct stat stat_info;
 };
 
 

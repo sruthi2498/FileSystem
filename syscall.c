@@ -307,7 +307,7 @@ void syscall_display_stat(int inodenum){
 	return 0;
 }
 
- struct syscall_stat syscall_lstat(int inodenum)
+ struct stat syscall_lstat(int inodenum)
 {
 	struct syscall_inode Inode = ReadInode(inodenum);
 	int stat_block_num = Inode.direct[0];
@@ -315,7 +315,7 @@ void syscall_display_stat(int inodenum){
 	//Read the stat block from inode
 	union syscall_block block;
 	disk_read(stat_block_num, &block);
-	struct syscall_stat buf;
+	struct stat buf;
 	buf=block.stat_info;
 	return buf;
 }
@@ -655,7 +655,7 @@ int syscall_min(int a,int b){
 syscall_find_stat_for_inodenum
 	- Return stat structure for a inode
 */
-struct syscall_stat syscall_find_stat_for_inodenum(int inodenum){
+struct stat syscall_find_stat_for_inodenum(int inodenum){
 
 	struct syscall_inode Inode=ReadInode(inodenum);
 	int stat_block=Inode.direct[0];
@@ -666,7 +666,7 @@ struct syscall_stat syscall_find_stat_for_inodenum(int inodenum){
 }
 
 //Write changes made in stat back to disk
-int syscall_write_stat_to_disk(struct syscall_stat s,int inode_num){
+int syscall_write_stat_to_disk(struct stat s,int inode_num){
 
 	struct syscall_inode Inode=ReadInode(inode_num);
 	union syscall_block stat_Block;
