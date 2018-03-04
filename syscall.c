@@ -674,6 +674,25 @@ int syscall_write_stat_to_disk(struct syscall_stat s,int inode_num){
 	disk_write(Inode.direct[0],&stat_Block);
 	return 1;
 }
+
+
+void syscall_display_current_file_info(){
+	printf("\nCURRENT FILE INFO :");
+	int inodes_in_use=0;
+	int data_blocks_in_use=0;
+	for(int i=0;i<NUMBER_OF_INODES;i++){
+		if(i_list[i].isvalid){
+			inodes_in_use++;
+		}
+	}
+	for(int i=DATABLOCK_START;i<NUMBER_OF_BLOCKS;i++){
+		if(free_block_bitmap[i]!=0){
+			data_blocks_in_use++;
+		}
+	}
+	printf("\n\tInodes in use : %d\n\tData Blocks in use : %d\n",inodes_in_use,data_blocks_in_use);
+}
+
 /* 
 syscall_read 
 	- help read bytes from a block
@@ -706,3 +725,4 @@ int syscall_write( char *data, int bytes, int offset, char * buf )
 	LogWrite("Syscall_read successfull\n");
 	return 1;
 }
+
