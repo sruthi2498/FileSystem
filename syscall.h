@@ -33,8 +33,8 @@ int syscall_find_inodenum_for_fd(int fd);
 int syscall_size_of_file_for_inodenum(int inodenum);
 
 int syscall_blocknum_for_offset(offset);
-struct syscall_stat syscall_find_stat_for_inodenum(int inodenum);
-int syscall_write_stat_to_disk(struct syscall_stat s,int inode_num);
+struct stat syscall_find_stat_for_inodenum(int inodenum);
+int syscall_write_stat_to_disk(struct stat s,int inode_num);
 
 int syscall_min(int a,int b);
 
