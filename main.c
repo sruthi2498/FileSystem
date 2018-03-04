@@ -23,7 +23,7 @@ static int fs_getattr(const char *path, struct stat *stbuf,
 	int inodenum ;
 	struct valid_inode_path getinode=namei(path);
 	inodenum=getinode.valid_inode;
-    syscall_lstat(inodenum);
+    stbuf = syscall_lstat(inodenum);
         
     return 0;
 	
