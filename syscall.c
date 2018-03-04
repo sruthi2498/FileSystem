@@ -258,8 +258,8 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 	//stat_buf.st_atim ;
 	//stat_buf.st_mtim ;
 	clock_gettime(CLOCK_REALTIME, &block.stat_info.st_ctim);
-	//stat_buf.st_blksize ;
-	block.stat_info.st_blocks = 4;
+	block.stat_info.st_blksize=DISK_BLOCK_SIZE;
+	block.stat_info.st_blocks = POINTERS_PER_INODE;
 
 	if(file_type == S_IFDIR){
 		block.stat_info.st_nlink = 2;
@@ -268,8 +268,8 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 		block.stat_info.st_nlink = 1;
 	}
 
-	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
-		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
+	//printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
+		//inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
 	syscall_display_stat(inode_num);
 	disk_write(stat_block_num, &block);
 	
@@ -638,21 +638,46 @@ int syscall_min(int a,int b){
 	if(a<=b)return a;
 	return b;
 }
+
+/*
+syscall_find_stat_for_inodenum
+	- Return stat structure for a inode
+*/
+struct syscall_stat syscall_find_stat_for_inodenum(int inodenum){
+
+	struct syscall_inode Inode=ReadInode(inodenum);
+	int stat_block=Inode.direct[0];
+	union syscall_block block;
+	disk_read(stat_block,&block);
+	return block.stat_info;
+
+}
+
+//Write changes made in stat back to disk
+int syscall_write_stat_to_disk(struct syscall_stat s,int inode_num){
+
+	struct syscall_inode Inode=ReadInode(inode_num);
+	union syscall_block stat_Block;
+	stat_Block.stat_info=s;
+	disk_write(Inode.direct[0],&stat_Block);
+	return 1;
+}
 /* 
 syscall_read 
 	- help read bytes from a block
 	- store read data into buf
 */
 
-int  syscall_read( char *data, int length, int offset, char * buf)
+int  syscall_read( char *data, int bytes, int offset, char * buf)
 {
 	
-	size_t bytes=length-offset;
-	//printf("bytes to be read %d\n",bytes);
+//	printf("Actual data %s\n",data);
+//	printf("bytes to be read %d from offset %d\n",bytes,offset);
 	if(bytes<0)return 0;
-	buf=malloc(sizeof(char)*(bytes+1));
+	//buf=malloc(sizeof(char)*(bytes+1));
 	strncpy(buf,data+offset,bytes);
-	//printf("syscall_read read into buf %s",buf);
+	buf[bytes]='\0';
+//	printf("syscall_read read into buf %s\n",buf);
 	LogWrite("Syscall_read successfull\n");
 	return 1;
 }
