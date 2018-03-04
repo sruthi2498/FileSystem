@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <unistd.h>
 char *buffer[20];
+
 /*
 dir_mkdir
 	- Check if directory already exists
@@ -57,6 +58,8 @@ int dir_mkdir(char * name){
 	}*/
 }
 
+
+
 /*
 dir_rmdir
 	- Get its inode
@@ -69,8 +72,11 @@ dir_rmdir
 int dir_rmdir(char * name){
 
 	struct valid_inode_path dir_info;
+
+	//Find inode for filepath
 	dir_info = 	namei(name);
 
+	//Check if path was found 
 	if(dir_info.found < 0){
 		printf("Directory %s does not exist \n", name);
 		LogWrite("Directory does not exist\n");
@@ -78,11 +84,15 @@ int dir_rmdir(char * name){
 	}
 
 	int inodenum;
+
+	//Get valid inode
 	inodenum = dir_info.valid_inode;
 
+	//Delete inode
 	syscall_delete_Inode(inodenum);
+
+	printf("Directory %s deleted\n", name);
+
 	return 0;
-
-
 
 }
