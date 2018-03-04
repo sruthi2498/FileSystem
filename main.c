@@ -17,7 +17,9 @@ static size_t fs_size;
 static int fs_getattr(const char *path, struct stat *stbuf,
 			 struct fuse_file_info *fi)
 {
-	LogWrite("fs_getattr");
+	//Return error if directory doesnt exist
+
+  LogWrite("fs_getattr");
 	int inodenum ;
 	struct valid_inode_path getinode=namei(path);
 	inodenum=getinode.valid_inode;
