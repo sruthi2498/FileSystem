@@ -17,7 +17,7 @@ static size_t fs_size;
 static int fs_getattr(const char *path, struct stat *stbuf,
 			 struct fuse_file_info *fi)
 {
-	
+	//Return error if directory doesnt exist
 }
 
 static int fs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
