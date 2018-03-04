@@ -107,7 +107,7 @@ union syscall_block {
 //FILE STRUCTURES
 //Contains file information like file status flags, current file offset, vnode pointer
 struct file_table_entry{
-	//int mode;
+	int mode;
 	//file status flags
 	//current file offset
 	int file_offset;

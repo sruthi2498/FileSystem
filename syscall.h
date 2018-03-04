@@ -12,7 +12,7 @@ int  syscall_delete_Inode( int inumber );
 int  syscall_getsize();
 
 int  syscall_read( char *data, int bytes,int offset, char * buf);
-int  syscall_write( int inumber, const char *data, int length, int offset );
+int  syscall_write( char *data, int bytes, int offset, char * buf );
 
 int syscall_assign_datablocks(int inode_num);
 int syscall_find_free_datablock();
