@@ -11,7 +11,7 @@ int  syscall_create_Inode();
 int  syscall_delete_Inode( int inumber );
 int  syscall_getsize();
 
-int  syscall_read( int inumber, char *data, int length, int offset );
+int  syscall_read( char *data, int bytes,int offset, char * buf);
 int  syscall_write( int inumber, const char *data, int length, int offset );
 
 int syscall_assign_datablocks(int inode_num);
@@ -28,7 +28,15 @@ int syscall_find_next_free_file_descriptor();
 int syscall_assign_filetable(int inodenum);
 
 int syscall_find_fd_for_inodenum(int inode_num);
+int syscall_find_inodenum_for_fd(int fd);
 
+int syscall_size_of_file_for_inodenum(int inodenum);
+
+int syscall_blocknum_for_offset(offset);
+struct syscall_stat syscall_find_stat_for_inodenum(int inodenum);
+int syscall_write_stat_to_disk(struct syscall_stat s,int inode_num);
+
+int syscall_min(int a,int b);
 
 void syscall_display_stat(int inodenum);
 void syscall_display_datablock_for_inode(int inodenum);

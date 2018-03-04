@@ -258,8 +258,8 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 	//stat_buf.st_atim ;
 	//stat_buf.st_mtim ;
 	clock_gettime(CLOCK_REALTIME, &block.stat_info.st_ctim);
-	//stat_buf.st_blksize ;
-	block.stat_info.st_blocks = 4;
+	block.stat_info.st_blksize=DISK_BLOCK_SIZE;
+	block.stat_info.st_blocks = POINTERS_PER_INODE;
 
 	if(file_type == S_IFDIR){
 		block.stat_info.st_nlink = 2;
@@ -268,8 +268,8 @@ int syscall_initialise_file_info(int inode_num, int file_type){
 		block.stat_info.st_nlink = 1;
 	}
 
-	printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
-		inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
+	//printf("\nInitialized inode %d with stat information as follows : \n st_ino %d \nst_nlink %d \nst_blocks %d \n",
+		//inode_num, block.stat_info.st_ino, block.stat_info.st_nlink, block.stat_info.st_blocks);
 	syscall_display_stat(inode_num);
 	disk_write(stat_block_num, &block);
 	
@@ -287,7 +287,7 @@ void syscall_display_stat(int inodenum){
 	//Read the stat block from inode
 	union syscall_block block;
 	disk_read(stat_block_num, &block);
-
+	
 	//Stat file information structure
 	printf("\nStat for inode %d",inodenum);
 	printf("\n\tst_mode   : %d",block.stat_info.st_mode);
@@ -304,9 +304,21 @@ void syscall_display_stat(int inodenum){
 	printf("\n\tst_st_mtim: %lld.%.9ld", (long long)block.stat_info.st_mtim.tv_sec, block.stat_info.st_mtim.tv_nsec);
 	printf("\n\tst_ctim   : %lld.%.9ld", (long long)block.stat_info.st_ctim.tv_sec, block.stat_info.st_ctim.tv_nsec);
 	printf("\n");
+	return 0;
 }
 
+ struct syscall_stat syscall_lstat(int inodenum)
+{
+	struct syscall_inode Inode = ReadInode(inodenum);
+	int stat_block_num = Inode.direct[0];
 
+	//Read the stat block from inode
+	union syscall_block block;
+	disk_read(stat_block_num, &block);
+	struct syscall_stat buf;
+	buf=block.stat_info;
+	return buf;
+}
 /*
 	Creates the default directories . and .. 
 */
@@ -542,6 +554,10 @@ syscall_find_fd_for_inodenum
 int syscall_find_fd_for_inodenum(int inodenumber){
 	// go through file_table_entries
 	// find index for inode -> fd_pointer
+	if(inodenumber<0 || inodenumber>NUMBER_OF_INODES){
+		LogWrite("Invalid inode number\n");
+		return -1;
+	}
 	int i=0;
 	int fd_pointer=-1;
 	while(i<MAX_FD){
@@ -550,6 +566,10 @@ int syscall_find_fd_for_inodenum(int inodenumber){
 			i=MAX_FD;
 		}
 		i++;
+	}
+	if(fd_pointer==-1){
+		LogWrite("Could not find inode number in file_table entry\n");
+		return -1;
 	}
 	//go through fd_entry 
 	i=0;
@@ -561,18 +581,117 @@ int syscall_find_fd_for_inodenum(int inodenumber){
 		}
 		i++;
 	}
+
 	return fd;
 }
 
+
+/*
+syscall_find_inodenum_for_fd
+	- Given fd find inode_num
+*/
+int syscall_find_inodenum_for_fd(int fd){
+	if(fd<0 || fd>MAX_FD){
+		LogWrite("Invalid fd\n");
+		return -1;
+	}
+
+	//get fd_pointer in Open file table
+	int fd_pointer=Open_file_table.fd_entry[fd].fd_pointer;
+
+	//get inode in file_table_entries 
+	int inodenumber=file_table_entries[fd_pointer].inode_num;
+
+	return inodenumber;
+
+}
+
+/*
+syscall_size_of_file_for_inodenum
+	- return size of file in bytes
+	- argument : inodenumber
+	- ONLY DACTUAL DATA SIZE  (not stat)
+*/
+int syscall_size_of_file_for_inodenum(int inodenum){
+
+	if(inodenum<0 || inodenum>NUMBER_OF_INODES){
+		LogWrite("Invalid inode_num");
+		return -1;
+	}
+
+	//read inode
+	struct syscall_inode Inode = ReadInode(inodenum);
+
+	return Inode.size;
+}
+
+/*
+syscall_blocknum_for_offset
+	- offset specifies where which byte we should start reading from
+	- 4 datablocks per file, but only datablock 1,2,3,... have actual info 
+		(0 is for stat)
+*/
+int syscall_blocknum_for_offset(offset){
+
+	/* POINTERS_PER_INODE -1 =3
+	*/
+	if(offset<0 || offset>(DISK_BLOCK_SIZE*(POINTERS_PER_INODE-1))){
+		LogWrite("Invalid offset\n");
+		return -1;
+	}
+	int blocknum=1;
+	while(offset/DISK_BLOCK_SIZE >= blocknum){
+		blocknum++;
+	}
+	return blocknum;
+}
+
+int syscall_min(int a,int b){
+	if(a<=b)return a;
+	return b;
+}
+
+/*
+syscall_find_stat_for_inodenum
+	- Return stat structure for a inode
+*/
+struct syscall_stat syscall_find_stat_for_inodenum(int inodenum){
+
+	struct syscall_inode Inode=ReadInode(inodenum);
+	int stat_block=Inode.direct[0];
+	union syscall_block block;
+	disk_read(stat_block,&block);
+	return block.stat_info;
+
+}
+
+//Write changes made in stat back to disk
+int syscall_write_stat_to_disk(struct syscall_stat s,int inode_num){
+
+	struct syscall_inode Inode=ReadInode(inode_num);
+	union syscall_block stat_Block;
+	stat_Block.stat_info=s;
+	disk_write(Inode.direct[0],&stat_Block);
+	return 1;
+}
 /* 
 syscall_read 
-	- Read data from a valid inode
-	- Copy "length" bytes from the inode into the "data" pointer, starting at "offset" in the inode. Return the total number of bytes read. The number of bytes actually read could be smaller than the number of bytes requested, perhaps if the end of the inode is reached. If the given inumber is invalid, or any other error is encountered, return 0. 
+	- help read bytes from a block
+	- store read data into buf
 */
 
-int syscall_read( int inumber, char *data, int length, int offset )
+int  syscall_read( char *data, int bytes, int offset, char * buf)
 {
-	return 0;
+	
+//	printf("Actual data %s\n",data);
+//	printf("bytes to be read %d from offset %d\n",bytes,offset);
+	if(bytes<0)return 0;
+	//buf=malloc(sizeof(char)*(bytes+1));
+	strncpy(buf,data+offset,bytes);
+	buf[bytes]='\0';
+//	printf("syscall_read read into buf %s\n",buf);
+	LogWrite("Syscall_read successfull\n");
+	return 1;
 }
 
 int syscall_write( int inumber, const char *data, int length, int offset )
