@@ -20,10 +20,3 @@ void ResetLogFile(){
 	fp=fopen("log.txt","w");
 	fclose(fp);
 }
-
-// int main(){
-// 	ResetLogFile();
-// 	LogWrite("abc\n");
-// 	LogWrite("def\n");
-
-// }

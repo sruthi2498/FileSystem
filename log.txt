@@ -1,115 +1,190 @@
-Sat Mar  3 22:13:21 2018: System Format
-Sat Mar  3 22:13:21 2018: Completed initialising disk
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Superblock initialised
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Completed Initialising empty inodes
-Sat Mar  3 22:13:21 2018: Printing disk attributes
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Disk is valid
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Free Block Bitmap created
-Sat Mar  3 22:13:21 2018: Creating home dir...
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Assigning datablocks to inode
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Read Inode
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Created inode successfully
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Read Inode
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Read Inode
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Read Inode
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Stat file info initialised successfully
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Read Inode
-Sat Mar  3 22:13:21 2018: Read current directory's data block number
-Sat Mar  3 22:13:21 2018: Reading from disk completed
-Sat Mar  3 22:13:21 2018: Updating current directory listing
-Sat Mar  3 22:13:21 2018: Writing to disk completed
-Sat Mar  3 22:13:21 2018: Default directories created successfully
-Sat Mar  3 22:13:21 2018: Created home directory successfully
-Sat Mar  3 22:13:21 2018: Current root inode updated
-Sat Mar  3 22:13:21 2018: Init completed
+Sun Mar  4 11:02:26 2018: System Format
+Sun Mar  4 11:02:26 2018: Completed initialising disk
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Superblock initialised
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Completed Initialising empty inodes
+Sun Mar  4 11:02:26 2018: Printing disk attributes
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Disk is valid
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Free Block Bitmap created
+Sun Mar  4 11:02:26 2018: Creating home dir...
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Assigning datablocks to inode
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Created inode successfully
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Stat file info initialised successfully
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Read current directory's data block number
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Updating current directory listing
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Default directories created successfully
+Sun Mar  4 11:02:26 2018: Created home directory successfully
+Sun Mar  4 11:02:26 2018: Current root inode updated
+Sun Mar  4 11:02:26 2018: Init completed
+Sun Mar  4 11:02:26 2018: Going to return fuse_main
+Sun Mar  4 11:02:26 2018: file_open called
+Sun Mar  4 11:02:26 2018: looking up path ...
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Assigning datablocks to inode
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Created inode successfully
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Path name resolved to inode number
+Sun Mar  4 11:02:26 2018: Found file table entry
+Sun Mar  4 11:02:26 2018: Found free file descriptor
+Sun Mar  4 11:02:26 2018: file_open successful
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Syscall_read successfull
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Syscall_read successfull
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Reading from disk completed
+Sun Mar  4 11:02:26 2018: Read Inode
+Sun Mar  4 11:02:26 2018: Writing to disk completed
+Sun Mar  4 11:02:26 2018: Writing to disk completed
