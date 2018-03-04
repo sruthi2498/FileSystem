@@ -196,7 +196,7 @@ ssize_t file_read(int fd, void *buf, size_t nbyte, off_t offset){
 		 actual_block_num=Inode.direct[block_num_pos];
 		// printf("actual_block_num %d\n",actual_block_num);
 		//calculate offset into block, number of bytes to read;
-		if (remaining_bytes == nbyte) {
+		if (remaining_bytes == nbyte){
 			//finish an offset in the first block to be read
 			bytes_to_be_copied = syscall_min(DISK_BLOCK_SIZE - current_offset_in_block, remaining_bytes);
 		}
