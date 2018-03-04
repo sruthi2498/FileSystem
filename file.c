@@ -257,8 +257,7 @@ ssize_t file_read(int fd, void *buf, size_t nbyte, off_t offset){
 }
 
 
-size_t file_write(int fd, void *buf, off_t offset){
-
+size_t file_write(int fd, const void *buf, size_t nbyte, off_t offset){
 
 	if(fd<0 || fd>MAX_FD){
 		LogWrite("Invalid fd\n");
@@ -302,8 +301,8 @@ size_t file_write(int fd, void *buf, off_t offset){
 	//set byte offset in u area from file table offset;
 	size_t file_table_offset=my_file_table_entry.file_offset;
 
-	size_t  nbyte=strlen(buf);
-	remaining_bytes = (int)nbyte; //remaining to be wriiten
+	remaining_bytes = nbyte;
+	int written_bytes = 0;
 	
 	int block_num_pos,actual_block_num;
 	union syscall_block Block;
@@ -313,12 +312,13 @@ size_t file_write(int fd, void *buf, off_t offset){
 	int copied=0;
 	struct stat my_stat;
 
+	current_offset_in_block = offset % DISK_BLOCK_SIZE ;
+
 	//Writing to offset while more data is left
 	while(remaining_bytes>=0){
 		//printf("\n---------\nremaining bytes %d\n",remaining_bytes);
 		//convert file offset to disk block (algorithm bmap);
 		//Call bmap to find block and block offset corresponding to this offset
-		current_offset_in_block = offset % DISK_BLOCK_SIZE ;
 		//printf("current_offset_in_block %d\n",current_offset_in_block);
 
 		block_num_pos=syscall_blocknum_for_offset(offset);
@@ -328,12 +328,7 @@ size_t file_write(int fd, void *buf, off_t offset){
 		// printf("actual_block_num %d\n",actual_block_num);
 		
 		//calculate offset into block, number of bytes to read;
-		if (remaining_bytes == nbyte) {
-			bytes_to_be_copied = syscall_min(DISK_BLOCK_SIZE - current_offset_in_block, remaining_bytes);
-		}
-		else {
-			bytes_to_be_copied = syscall_min(DISK_BLOCK_SIZE, remaining_bytes);
-		}
+		bytes_to_be_copied = syscall_min(DISK_BLOCK_SIZE - current_offset_in_block, remaining_bytes);
 
 		//if (number of bytes to read is 0)
 			/* trying to read end of file */
@@ -366,6 +361,8 @@ size_t file_write(int fd, void *buf, off_t offset){
 		//printf("new remaining bytes %d\n",remaining_bytes);
 		offset=offset+copied;		
 
+		current_offset_in_block = (current_offset_in_block + bytes_to_be_copied) % DISK_BLOCK_SIZE;
+
 		//CHANGE MODIFICATION TIME IN STAT
 		my_stat=syscall_find_stat_for_inodenum(inode_num);
 		clock_gettime(CLOCK_REALTIME, &my_stat.st_mtim);
@@ -376,6 +373,10 @@ size_t file_write(int fd, void *buf, off_t offset){
 
 
 	}
+
+	//update file table offset for next read;
+	my_file_table_entry.file_offset=offset;
+	file_table_entries[fd_pointer]=my_file_table_entry;
 	//return byte_count;
 	return copied;
 
