@@ -59,7 +59,7 @@ struct syscall_dirent{
 };
 
 //Stat file information structure
-struct syscall_stat {
+struct stat {
 	int			st_mode;
 	int			st_ino;
 	int			st_dev;
@@ -99,7 +99,7 @@ union syscall_block {
 	int pointers[POINTERS_PER_BLOCK];
 	char data[DISK_BLOCK_SIZE];
 	struct syscall_dirent dir_entries[MAX_DIR_ENTRIES];
-	struct syscall_stat stat_info;
+	struct stat stat_info;
 };
 
 
