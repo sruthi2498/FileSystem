@@ -16,10 +16,12 @@ int file_open(char * pathname,int oflag){
 
 	LogWrite("file_open called\n");
 	//Find node from pathname
+
 		//Check if file does not exist
 		struct valid_inode_path path_inode;
 		path_inode = namei(pathname);
 		int new_inode_num=path_inode.valid_inode;
+		printf("new indoe num %d", new_inode_num);
 		if(path_inode.found > 0){
 			printf("Inode of path name %s is  %d\n", pathname, path_inode.valid_inode);
 			LogWrite("path_inode.found!!\n");
@@ -31,18 +33,22 @@ int file_open(char * pathname,int oflag){
 				return 0;
 			}
 			else{
+				printf("Creating new file ");
 				new_inode_num=syscall_create_Inode();
 				if(new_inode_num<0) return 0;
 				syscall_initialise_file_info(new_inode_num, S_IFREG);
-
+				printf(" with inode num %d\n", new_inode_num);
+				syscall_add_entry_dir(path_inode.valid_inode, path_inode.not_found_entry, new_inode_num);
 			}
 
 		}
 		LogWrite("Path name resolved to inode number\n");
 
+		//insert into file table
 		int index_in_file_table_entry=syscall_assign_filetable(new_inode_num);
 		if(index_in_file_table_entry<0)return 0;
 
+		//Find an available fd
 		int fd=syscall_find_next_free_file_descriptor();
 		if(fd<0 || fd>MAX_FD)return 0;
 
@@ -51,15 +57,16 @@ int file_open(char * pathname,int oflag){
 		Open_file_table.fd_entry[fd].fd=fd;
 
 		Open_file_table.count_used_file_descriptors++;
-	// allocate file table entry for node, initialize count, offset;
 	
+		// allocate file table entry for node, initialize count, offset; 
+		//Redudant?, already done in syscall_assign_filetable??
 		file_table_entries[index_in_file_table_entry].inode_num=new_inode_num;
 	
 	//CHECK OFFSET (for diff flags)
 		file_table_entries[index_in_file_table_entry].file_offset=0;
 
     struct syscall_inode Inode=ReadInode(new_inode_num);
-
+    printf("Get inode info of %d\n", new_inode_num);
 	// if (type of open specifies truncate file)
 		//free all file blocks (algorithm free);
 	if(oflag & O_TRUNC)
@@ -236,12 +243,12 @@ ssize_t file_read(int fd, void *buf, size_t nbyte, off_t offset){
 		//printf("new remaining bytes %d\n",remaining_bytes);
 		offset=offset+copied;		
 
-		//CHANGE ACCESS TIME IN STAT
+		/*//CHANGE ACCESS TIME IN STAT
 		my_stat=syscall_find_stat_for_inodenum(inode_num);
 		clock_gettime(CLOCK_REALTIME, &my_stat.st_atim);
 		r=syscall_write_stat_to_disk(my_stat,inode_num);
 		Inode_Block.inode[Inode.offset_in_block]=Inode;
-		disk_write(inode_blocknum,&Inode_Block);
+		disk_write(inode_blocknum,&Inode_Block);*/
 
 
 	}
