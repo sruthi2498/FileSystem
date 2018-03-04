@@ -98,7 +98,7 @@ int file_open(char * pathname,int oflag){
 	//return (file descriptor);
 
 		//CHANGE ACCESS TIME IN STAT
-		struct syscall_stat my_stat;
+		struct stat my_stat;
 		union syscall_block Inode_Block;
 		my_stat=syscall_find_stat_for_inodenum(new_inode_num);
 		clock_gettime(CLOCK_REALTIME, &my_stat.st_atim);
@@ -182,7 +182,7 @@ ssize_t file_read(int fd, void *buf, size_t nbyte, off_t offset){
 	char * temp_buf;
 	int r;
 	int copied=0;
-	struct syscall_stat my_stat;
+	struct stat my_stat;
 	//while (count not satisfied)
 	while(remaining_bytes>=0){
 		//printf("\n---------\nremaining bytes %d\n",remaining_bytes);
@@ -311,7 +311,7 @@ size_t file_write(int fd, void *buf, off_t offset){
 	char * temp_buf;
 	int r;
 	int copied=0;
-	struct syscall_stat my_stat;
+	struct stat my_stat;
 
 	//Writing to offset while more data is left
 	while(remaining_bytes>=0){
