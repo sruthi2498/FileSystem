@@ -694,7 +694,15 @@ int  syscall_read( char *data, int bytes, int offset, char * buf)
 	return 1;
 }
 
-int syscall_write( int inumber, const char *data, int length, int offset )
+int syscall_write( char *data, int bytes, int offset, char * buf )
 {
-	return 0;
+	//printf("bytes to be read %d from offset %d\n",bytes,offset);
+	if(bytes<0)return 0;
+	//buf=malloc(sizeof(char)*(bytes+1));
+	int new_offset=DISK_BLOCK_SIZE-offset;
+	strncpy(data+new_offset,buf,bytes);
+	data[bytes]='\0';
+//	printf("syscall_read read into buf %s\n",buf);
+	LogWrite("Syscall_read successfull\n");
+	return 1;
 }
