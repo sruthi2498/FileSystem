@@ -19,7 +19,10 @@ int disk_init( const char *filename, int n )
 {
 	
 	diskfile = fopen(filename,"r+");
-	if(!diskfile) diskfile = fopen(filename,"w+");
+	if(!diskfile) {
+		printf("\nopening in w+ mode ");
+		diskfile = fopen(filename,"w+");
+	}
 	if(!diskfile) return 0;
 
 	ftruncate(fileno(diskfile),n*DISK_BLOCK_SIZE);
@@ -103,7 +106,9 @@ void disk_write( int blocknum, const void *data )
 	int write_ret=fwrite(data,DISK_BLOCK_SIZE,1,diskfile);
 	if(write_ret==1) {
 		nwrites++;
-	} else {
+		free_block_bitmap[blocknum]=1;
+	} 
+	else {
 		//printf("Wrote %d\n",write_ret);
 		printf("ERROR: couldn't access simulated disk: %s\n",strerror(errno));
 		char * error=strdup("ERROR: couldn't access simulated disk: ");

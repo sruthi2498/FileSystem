@@ -44,4 +44,6 @@ void syscall_free_datablock_for_inode(int inodenum);
 
 void write_i_list_to_disk();
 
+void syscall_display_current_file_info();
+
 #endif

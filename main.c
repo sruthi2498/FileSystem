@@ -23,7 +23,7 @@ static int fs_getattr(const char *path, struct stat *stbuf,
 	int inodenum ;
 	struct valid_inode_path getinode=namei(path);
 	inodenum=getinode.valid_inode;
-    syscall_lstat(inodenum)
+    syscall_lstat(inodenum);
         
     return 0;
 	
@@ -120,8 +120,14 @@ int main(int argc, char *argv[]){
 	union syscall_block Inode_Block;
 	Inode_Block.inode[Inode.offset_in_block]=Inode;
 	disk_write(Inode.blocknum,&Inode_Block);
-	
+	syscall_display_current_file_info();
 	inode_atttributes_given_inodenumber(inode);
+	// union syscall_block B;
+	// char * t=malloc(sizeof(char)*4096);
+	// disk_read(31,t);
+	// printf("read : %s\n",t);
+
+
 
 	/*char *temp2=(char *)malloc(sizeof(char)*DISK_BLOCK_SIZE);
 	int r=file_read(fd, temp2, 20,4092);
@@ -130,18 +136,16 @@ int main(int argc, char *argv[]){
 	}
 	else printf("\n\nREAD : \n\t %s\n",temp2);*/
 
-	int r=file_close(fd);
+	// int r=file_close(fd);
 
-	fd=file_open("/abc.txt",O_RDWR);
-	printf("\nOpened with O_RDWR\n");
-	inode_atttributes_given_inodenumber(inode);
+	// fd=file_open("/abc.txt",O_RDWR);
+	// printf("\nOpened with O_RDWR\n");
+	// inode_atttributes_given_inodenumber(inode);
 
-	char * temp4="THIS IS GOING TO BE WRITEN";
-	r=file_write(fd, temp4,Inode.size-1 );
-	if(r<=0){
-		printf("\n0 bytes written\n");
-	}
-
-
+	// char * temp4="THIS IS GOING TO BE WRITEN";
+	// r=file_write(fd, temp4,Inode.size-1 );
+	// if(r<=0){
+	// 	printf("\n0 bytes written\n");
+	// }
 	return fuse_main(argc, argv, &fs_oper, NULL);
 }

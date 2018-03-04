@@ -72,9 +72,11 @@ int calculate_offset_in_block(int inodenumber,int blocknum){
 /*
 Set all datablocks to -1 in free_block_bitmap
 */
-void initialise_free_block_bitmap(){
-	for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
-		free_block_bitmap[i] = 0;
+void initialise_free_block_bitmap(int reset){
+	if(reset){
+		for(int i=DATABLOCK_START; i<NUMBER_OF_BLOCKS; i++){
+			free_block_bitmap[i] = 0;
+		}
 	}
 
 }
@@ -86,15 +88,17 @@ add it to i-list
 */
 int initialise_empty_inodes(int reset){
 	for(int i=0;i<NUMBER_OF_INODES;i++){
-		i_list[i].isvalid = 0;
+
 		i_list[i].blocknum=calculate_block_for_inode(i);
 		i_list[i].offset_in_block=calculate_offset_in_block(i,i_list[i].blocknum);
 		if(reset){ //set all data blocks to -1
+					//set valid to 0
+			i_list[i].isvalid = 0;
 			for(int j=0;j<INODES_PER_BLOCK;j++){//for every inode in the block
 				i_list[i].direct[j]=-1;
 			}
 		}
-		i_list[i].size=(int)sizeof(i_list[i]);
+		//i_list[i].size=(int)sizeof(i_list[i]);
 
 
 	}
@@ -198,7 +202,7 @@ int initialise_my_filesystem(){
 	int trial=1;
 
 	do{
-		printf("\nDo you want to reset the file system?\n\tType 1 to Reset\n\tType 0 to continue with old file system\n\t(Note that all files will be lost)\n");
+		printf("\nDo you want to reset the file system?\n\tType 1 to Reset\n\t(Note that all files will be lost)\n\tType 0 to continue with old file system\n\n");
 		scanf("%d",&choice);
 		if(choice!=1 && choice!=0) 
 			printf("\nInvalid Choice Try again\n\tType 1 to Reset\n\tType 0 to continue with old file system\n");
@@ -229,7 +233,7 @@ int initialise_my_filesystem(){
 		LogWrite("Syscall Mount failed");
 		return 0;
 	}
-	initialise_free_block_bitmap();
+	initialise_free_block_bitmap(choice);
   
 	int homedirret=initialise_homeDir();
 	if(homedirret<0){
