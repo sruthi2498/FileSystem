@@ -287,7 +287,7 @@ void syscall_display_stat(int inodenum){
 	//Read the stat block from inode
 	union syscall_block block;
 	disk_read(stat_block_num, &block);
-
+	
 	//Stat file information structure
 	printf("\nStat for inode %d",inodenum);
 	printf("\n\tst_mode   : %d",block.stat_info.st_mode);
@@ -304,9 +304,21 @@ void syscall_display_stat(int inodenum){
 	printf("\n\tst_st_mtim: %lld.%.9ld", (long long)block.stat_info.st_mtim.tv_sec, block.stat_info.st_mtim.tv_nsec);
 	printf("\n\tst_ctim   : %lld.%.9ld", (long long)block.stat_info.st_ctim.tv_sec, block.stat_info.st_ctim.tv_nsec);
 	printf("\n");
+	return 0;
 }
 
+ struct syscall_stat syscall_lstat(int inodenum)
+{
+	struct syscall_inode Inode = ReadInode(inodenum);
+	int stat_block_num = Inode.direct[0];
 
+	//Read the stat block from inode
+	union syscall_block block;
+	disk_read(stat_block_num, &block);
+	struct syscall_stat buf;
+	buf=block.stat_info;
+	return buf;
+}
 /*
 	Creates the default directories . and .. 
 */
