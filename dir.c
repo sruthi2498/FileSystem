@@ -13,6 +13,51 @@
 #include <unistd.h>
 char *buffer[20];
 
+
+int dir_readdir(const char *name, void *buffer, fuse_fill_dir_t filler, off_t offset) {
+
+	struct valid_inode_path dir_info;
+	dir_info = 	namei(name);
+
+	if(dir_info.found < 0){
+		printf("Directory %s not found \n", name);
+		LogWrite("Directory not found\n");
+		return -1;
+	}
+
+	//Get parent directory	
+	int parent_inode = dir_info.valid_inode;
+
+	//Read the block containing the inode information
+	struct syscall_inode Inode = ReadInode(parent_inode);
+	int curr_dirent_block_num = Inode.direct[1];
+	LogWrite("Read current directory's data block number\n");
+
+	//Read directory entries datablock
+	union syscall_block block;
+	disk_read(curr_dirent_block_num, &block);
+
+	//Read every entry in directory
+	int num_entries = block.dir_entries[0].inode_num;
+	
+	for(int i=1; i<=num_entries; i++){
+		char buff[20];
+		strcpy(buff, block.dir_entries[i].entry_name);
+
+		struct stat stat = {
+			.st_dev = 0
+		};
+		stat.st_ino = block.dir_entries[i].inode_num;
+
+		//If name exists, return inode
+		filler(buffer, buff, &stat, 0, 0);
+	}
+
+
+	return 1;
+
+}
+
 /*
 dir_mkdir
 	- Check if directory already exists
