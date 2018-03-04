@@ -1,4 +1,9 @@
+int initialise_my_filesystem();
+
 int init_superblock();
+
+int initialise_homeDir();
+void initialise_free_block_bitmap();
 
 int initialise_empty_inodes(int reset);
 void inode_atttributes_given_inodenumber(int inodenumber);
