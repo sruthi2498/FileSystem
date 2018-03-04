@@ -17,6 +17,13 @@ static size_t fs_size;
 static int fs_getattr(const char *path, struct stat *stbuf,
 			 struct fuse_file_info *fi)
 {
+	LogWrite("fs_getattr");
+	int inodenum ;
+	struct valid_inode_path getinode=namei(path);
+	inodenum=getinode.valid_inode;
+    syscall_lstat(inodenum)
+        
+    return 0;
 	
 }
 
@@ -56,28 +63,30 @@ static int fs_read(const char *path, char *buf, size_t size, off_t offset,
 static int fs_mkdir(const char *path, mode_t mode)
 {
 	LogWrite("called mkdir");
-	  if (dir_mkdir(path) == 0) {
+	  if (dir_mkdir(path) < 0) {
     	return -errno;
     }
 return 0;
 }
 
 static int fs_rmdir(const char *path) {
-
+  LogWrite("called rmdir");
+	 if (dir_rmdir(path) < 0) {
+    	return -errno;
+    }
+return 0;
 }
 
-static int utime(const char * path, struct utimbuf * timebuf){
-	//syscall_utime()
-}
+
 
 static struct fuse_operations fs_oper = {
-	//.getattr	= fs_getattr,
+	.getattr	= fs_getattr,
 	//.readdir	= fs_readdir,
 	.open       = fs_open,
 	//.read		= fs_read,
 	//.write      = fs_write,
 	.mkdir      = fs_mkdir,
-	//.rmdir      = fs_rmdir,
+	.rmdir      = fs_rmdir,
 };
 
 int main(int argc, char *argv[]){
